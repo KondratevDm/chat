@@ -1,14 +1,14 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-// import { useDispatch, useSelector } from 'react-redux'
-// import { checkEmailField, checkPasswordField, authFunction } from '../redux/reducers/auth'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateEmailField, updatePasswordField, loginFunction } from '../redux/reducers/auth'
 
 import Head from './head'
 
 const Login = () => {
-  // const dispatch = useDispatch()
-  // const email = useSelector((s) => s.auth.email)
-  // const password = useSelector((s) => s.auth.password)
+  const dispatch = useDispatch()
+  const email = useSelector((s) => s.auth.email)
+  const password = useSelector((s) => s.auth.password)
   return (
     <div>
       <Head title="Login" />
@@ -26,12 +26,12 @@ const Login = () => {
                       <input
                         placeholder=""
                         type="email"
-                        // value={email}
+                        value={email}
                         x-model="password_confirm"
                         className="text-md block px-3 py-2 rounded-lg w-full bg-white border-2 border-gray-300 placeholder-gray-600 shadow-md focus:placeholder-gray-500 focus:bg-white focus:border-gray-600 focus:outline-none"
-                        // onChange={(e) => {
-                        //   dispatch(checkEmailField(e.target.value))
-                        // }}
+                        onChange={(e) => {
+                          dispatch(updateEmailField(e.target.value))
+                        }}
                       />
                     </div>
 
@@ -41,20 +41,20 @@ const Login = () => {
                         placeholder=""
                         type="password"
                         x-model="password"
-                        // value={password}
+                        value={password}
                         className="text-md block px-3 py-2 rounded-lg w-full bg-white border-2 border-gray-300 placeholder-gray-600 shadow-md focus:placeholder-gray-500 focus:bg-white focus:border-gray-600 focus:outline-none"
-                        // onChange={(e) => {
-                          // dispatch(checkPasswordField(e.target.value))
-                        // }}
+                        onChange={(e) => {
+                          dispatch(updatePasswordField(e.target.value))
+                        }}
                       />
                     </div>
 
                     <button
                       type="button"
                       className="mt-3 text-lg focus:outline-none font-semibold bg-gray-800 w-full text-white rounded-lg px-6 py-3 block shadow-xl hover:text-white hover:bg-black"
-                      // onClick={() => {
-                        // dispatch(authFunction())
-                      // }}
+                      onClick={() => {
+                        dispatch(loginFunction())
+                      }}
                     >
                       Log in
                     </button>

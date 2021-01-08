@@ -7,10 +7,24 @@ import { renderToStaticNodeStream } from 'react-dom/server'
 import React from 'react'
 
 import cookieParser from 'cookie-parser'
+// import passport from 'passport'
+
+import mongooseService from './services/mongoose'
+// import passportJWT from './services/passport.js'
+
 import config from './config'
 import Html from '../client/html'
+import User from './model/User.model'
 
 const Root = () => ''
+
+mongooseService.connect()
+
+// const user = new User({
+//   email: 'qw@gmail.com',
+//   password: 'qw'
+// })
+// user.save()
 
 try {
   // eslint-disable-next-line import/no-unresolved
@@ -33,16 +47,34 @@ const server = express()
 
 const middleware = [
   cors(),
+  // passport.initialize(),
   express.static(path.resolve(__dirname, '../dist/assets')),
   bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }),
   bodyParser.json({ limit: '50mb', extended: true }),
   cookieParser()
 ]
 
+// passport.use('jwt', passportJWT.jwt)
+
 middleware.forEach((it) => server.use(it))
 
-server.get('/api/v1/users', (req, res) => {
-  res.send('привет привет')
+
+server.post('/api/v1/auth', (req, res) => {
+  console.log(req.body)
+  res.json({ status: 'ok' })
+})
+
+server.post('/api/v1/reg', (req, res) => {
+  const user = new User({
+    username: req.body.username,
+    email: req.body.email,
+    password: req.body.password
+  })
+  user.save()
+  console.log(`User ${req.body.username} added`)
+
+  // console.log(raseq.body)
+  res.json({ status: 'ok' })
 })
 
 server.use('/api/', (req, res) => {

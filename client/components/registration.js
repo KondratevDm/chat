@@ -1,19 +1,19 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-// import { useDispatch, useSelector } from 'react-redux'
-// import {
-//   createUsernameField,
-//   createEmailField,
-//   createPasswordField,
-//   createUser
-// } from '../redux/reducers/registration'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  createUsernameField,
+  createEmailField,
+  createPasswordField,
+  createUser
+} from '../redux/reducers/reg'
 import Head from './head'
 
 const Registration = () => {
-  // const dispatch = useDispatch()
-  // const username = useSelector((s) => s.registration.username)
-  // const email = useSelector((s) => s.registration.email)
-  // const password = useSelector((s) => s.registration.password)
+  const dispatch = useDispatch()
+  const username = useSelector((s) => s.reg.username)
+  const email = useSelector((s) => s.reg.email)
+  const password = useSelector((s) => s.reg.password)
 
   return (
     <div>
@@ -33,11 +33,11 @@ const Registration = () => {
                       <input
                         placeholder=""
                         type="text"
-                        // value={username}
+                        value={username}
                         className="text-md block px-3 py-2 rounded-lg w-full bg-white border-2 border-gray-300 placeholder-gray-600 shadow-md focus:placeholder-gray-500 focus:bg-white focus:border-gray-600 focus:outline-none"
-                        // onChange={(e) => {
-                          // dispatch(createUsernameField(e.target.value))
-                        // }}
+                        onChange={(e) => {
+                          dispatch(createUsernameField(e.target.value))
+                        }}
                       />
                     </div>
 
@@ -47,11 +47,11 @@ const Registration = () => {
                         placeholder=""
                         type="email"
                         x-model="password_confirm"
-                        // value={email}
+                        value={email}
                         className="text-md block px-3 py-2 rounded-lg w-full bg-white border-2 border-gray-300 placeholder-gray-600 shadow-md focus:placeholder-gray-500 focus:bg-white focus:border-gray-600 focus:outline-none"
-                        // onChange={(e) => {
-                        //   dispatch(createEmailField(e.target.value))
-                        // }}
+                        onChange={(e) => {
+                          dispatch(createEmailField(e.target.value))
+                        }}
                       />
                     </div>
 
@@ -61,20 +61,20 @@ const Registration = () => {
                         placeholder=""
                         type="password"
                         x-model="password"
-                        // value={password}
+                        value={password}
                         className="text-md block px-3 py-2 rounded-lg w-full bg-white border-2 border-gray-300 placeholder-gray-600 shadow-md focus:placeholder-gray-500 focus:bg-white focus:border-gray-600 focus:outline-none"
-                        // onChange={(e) => {
-                        //   dispatch(createPasswordField(e.target.value))
-                        // }}
+                        onChange={(e) => {
+                          dispatch(createPasswordField(e.target.value))
+                        }}
                       />
                     </div>
 
                     <button
                       type="button"
                       className="mt-3 text-lg focus:outline-none font-semibold bg-gray-800 w-full text-white rounded-lg px-6 py-3 block shadow-xl hover:text-white hover:bg-black"
-                      // onClick={() => {
-                      //   dispatch(createUser())
-                      // }}
+                      onClick={() => {
+                        dispatch(createUser())
+                      }}
                     >
                       Register
                     </button>
