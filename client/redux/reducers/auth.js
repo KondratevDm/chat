@@ -1,10 +1,14 @@
+import { history } from '..'  
+
 const UPDATE_EMAIL = 'UPDATE_LOGIN'
 const UPDATE_PASSWORD = 'UPDATE_PASSWORD'
 const LOGIN = 'LOGIN'
 
 const initialState = {
   email: '',
-  password: ''
+  password: '',
+  token: '',
+  user: {}
 }
 
 export default (state = initialState, action) => {
@@ -14,6 +18,9 @@ export default (state = initialState, action) => {
     }
     case UPDATE_PASSWORD: {
       return { ...state, password: action.password }
+    }
+    case LOGIN: {
+      return { ...state, token: action.token, password: '', user: action.user }
     }
     default:
       return state
@@ -43,7 +50,8 @@ export function loginFunction() {
     })
       .then((r) => r.json())
       .then((data) => {
-        dispatch({ type: LOGIN, token: data.token })
+        dispatch({ type: LOGIN, token: data.token, user: data.user })
+        history.push('/chat')
       })
   }
 }

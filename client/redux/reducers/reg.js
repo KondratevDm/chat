@@ -1,4 +1,5 @@
 // import axios from 'axios'
+import { history } from '..'
 
 const UPDATE_USERNAME = 'UPDATE_USERNAME'
 const UPDATE_EMAIL = 'UPDATE_EMAIL'
@@ -65,6 +66,7 @@ export function createUser() {
       .then((r) => r.json())
       .then((data) => {
         dispatch({ type: CREATE_USER, token: data.token })
+        history.push('/login')
       })
   }
 }
