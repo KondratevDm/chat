@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 
 const Sidebar = () => {
   return (
@@ -46,8 +45,6 @@ const Sidebar = () => {
         </div>
 
         <div className="px-4 mb-3 font-sans text-gray-100 opacity-50">Applications</div>
-        <Link to="/login">Login</Link>
-        <Link to="/registration">Registration</Link>
       </div>
     </div>
   )
