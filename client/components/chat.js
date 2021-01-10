@@ -8,8 +8,8 @@ const Chat = () => {
     <div className="h-screen">
       <div className="h-screen">
         <Head title="Chat" />
-        <Sidebar />,
-        <MessagesWindow />,
+        <Sidebar />
+        <MessagesWindow />
       </div>
     </div>
   )
