@@ -22,11 +22,6 @@ const Root = () => ''
 
 mongooseService.connect()
 
-// const user = new User({
-//   email: 'qw@gmail.com',
-//   password: 'qw'
-// })
-// user.save()
 
 try {
   // eslint-disable-next-line import/no-unresolved
@@ -60,7 +55,6 @@ passport.use('jwt', passportJWT.jwt)
 
 middleware.forEach((it) => server.use(it))
 
-
 server.get('/api/v1/user-info', auth(['admin']), (req, res) => {
   res.json({ users: connections.map((t) => t.userInfo) })
 })
@@ -79,6 +73,9 @@ server.post('/api/v1/auth', async (req, res) => {
     const token = jwt.sign(payload, config.secret, { expiresIn: '48h' })
     delete user.password
     res.cookie('token', token, { maxAge: 1000 * 60 * 60 * 48 })
+    // connection.forEach((c) => {
+    //   c.write(JSON.stringify({ type: 'SHOW_MESSAGE', message: `${user.email} just logged in` }))
+    // })
     res.json({ status: 'ok', token, user })
   } catch (err) {
     console.log(err)

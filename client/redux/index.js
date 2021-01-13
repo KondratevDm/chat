@@ -1,5 +1,7 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 import { routerMiddleware } from 'connected-react-router'
+// import { toast } from 'react-toastify'
+
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import SockJS from 'sockjs-client'
@@ -37,6 +39,12 @@ if (typeof ENABLE_SOCKETS !== 'undefined' && ENABLE_SOCKETS) {
 
       // socket.close();
     }
+
+    // socket.onmessage = ({data}) => {
+      // store.dispatch(JSON.parse(data))
+      // toast(JSON.parse(data).message)
+    // }
+
 
     socket.onclose = () => {
       store.dispatch(socketActions.disconnected)

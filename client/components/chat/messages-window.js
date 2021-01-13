@@ -7,7 +7,7 @@ const MessagesWindow = () => {
         {/* <!-- Top bar --> */}
         <div className="border-b flex px-6 items-center">
           <div className="flex flex-col">
-            <h3 className="text-gray-700 text-xl mb-1 font-bold">#general</h3>
+            <h3 className=" mt-2 text-xl mb-1 font-bold"> #general</h3>
             <div className="text-black opacity-75 font-light text-sm">
               Chit-chattin` about ugly HTML and mixing of concerns.
             </div>
@@ -15,7 +15,7 @@ const MessagesWindow = () => {
         </div>
 
         {/* <!-- Chat messages --> */}
-        <div className="px-6 py-4 flex-1 overflow-scroll-x flex-grow flex flex-col">
+        <div className="px-6 py-4 flex-1 overflow-scroll-x overflow-y-auto flex-grow flex flex-col">
           {/* <!-- A message --> */}
           <div className="flex items-start mb-4">
             <img
@@ -71,7 +71,10 @@ const MessagesWindow = () => {
             </div>
           </div>
 
+
+
           {/* <!-- Ignore --> */}
+          {/* <br />
           <br />
           <br />
           <br />
@@ -81,8 +84,7 @@ const MessagesWindow = () => {
           <br />
           <br />
           <br />
-          <br />
-          <br />
+          <br /> */}
         </div>
 
         <div className="flex ml-6 mr-6 mt-18  overflow-hidden">

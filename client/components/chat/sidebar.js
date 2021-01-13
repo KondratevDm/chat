@@ -5,7 +5,7 @@ const Sidebar = () => {
     <div>
       <div className="bg-purple-900 text-purple-lighter w-1/6 h-screen  hidden md:block absolute">
         <h1 className="text-white text-xl mb-2  px-4 font-sans flex justify-between">
-          <span className="mt-4">Tailwind CSS</span>
+          <span className="mt-2">Tailwind CSS</span>
           <svg className="h-6 w-6 mt-4 text-purple-lightest fill-current" viewBox="0 0 32 32">
             <g id="surface1">
               <path
@@ -15,7 +15,7 @@ const Sidebar = () => {
             </g>
           </svg>
         </h1>
-        <div className="flex items-center mb-6 px-4">
+        <div className="flex items-center -mt-1 mb-6 px-4">
           <span className="border bg-green-600 rounded-full block w-3 h-3 mr-2" />
           <span className="text-white">Olivia</span>
         </div>
