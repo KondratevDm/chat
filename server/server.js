@@ -2,15 +2,12 @@ import express from 'express'
 import path from 'path'
 import cors from 'cors'
 import bodyParser from 'body-parser'
-import sockjs from 'sockjs'
+// import sockjs from 'sockjs'
 import { renderToStaticNodeStream } from 'react-dom/server'
 import React from 'react'
-
 import cookieParser from 'cookie-parser'
 import passport from 'passport'
-
 import jwt from 'jsonwebtoken'
-
 import mongooseService from './services/mongoose'
 import passportJWT from './services/passport.js'
 import auth from './middleware/auth'
@@ -41,6 +38,8 @@ let connections = []
 
 const port = process.env.PORT || 8090
 const server = express()
+
+
 
 const middleware = [
   cors(),
@@ -87,7 +86,6 @@ server.get('/api/v1/auth', async (req, res) => {
   try {
     const jwtUser = jwt.verify(req.cookies.token, config.secret)
     const user = await User.findById(jwtUser.uid)
-
     const payload = { uid: user.id }
     const token = jwt.sign(payload, config.secret, { expiresIn: '48h' })
     delete user.password
@@ -145,18 +143,36 @@ server.get('/*', (req, res) => {
   )
 })
 
-const app = server.listen(port)
+// const app = server.listen(port)
 
-if (config.isSocketsEnabled) {
-  const echo = sockjs.createServer()
-  echo.on('connection', (conn) => {
-    connections.push(conn)
-    conn.on('data', async () => {})
+// const app = require('express')()
+// const http = require('http').createServer(app)
+// app.get('/test', (req, res) => {
+//   res.send('hello')
+// })
 
-    conn.on('close', () => {
-      connections = connections.filter((c) => c.readyState !== 3)
-    })
-  })
-  echo.installHandlers(app, { prefix: '/ws' })
-}
+const http = require('http').createServer(server)
+const io = require('socket.io')(http)
+
+http.listen(port, () => {
+  console.log(`listening on *:${port}`)
+})
+
+io.on('connection', (socket) => {
+  console.log('a user connected');
+});
+
+// if (config.isSocketsEnabled) {
+//   const echo = sockjs.createServer()
+//   echo.on('connection', (conn) => {
+//     connections.push(conn)
+//     conn.on('data', async () => {})
+
+//     conn.on('close', () => {
+//       connections = connections.filter((c) => c.readyState !== 3)
+//     })
+//   })
+//   echo.installHandlers(app, { prefix: '/ws' })
+// }
+
 console.log(`Serving at http://localhost:${port}`)
