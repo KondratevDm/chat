@@ -1,9 +1,29 @@
-import React from 'react'
+import React, { } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import CreateChannelModal from '../create-channel-modal'
+import { changeCreateChannelModalState } from '../../redux/reducers/createChannelModal'
+
+
 
 const Sidebar = () => {
+  const isCreateChannelModalActive = useSelector(
+    (s) => s.createChannelModal.isCreateChannelModalActive
+  )
+  const dispatch = useDispatch()
+
+  const addChannelModal = () => {
+    dispatch(changeCreateChannelModalState())
+  }
+
   return (
     <div>
-      <div className="bg-purple-900 text-purple-lighter w-1/6 h-screen  hidden md:block absolute">
+      <div
+        className={
+          isCreateChannelModalActive
+            ? 'bg-purple-900 text-purple-lighter w-1/6 h-screen  hidden md:block absolute opacity-50'
+            : 'bg-purple-900 text-purple-lighter w-1/6 h-screen  hidden md:block absolute'
+        }
+      >
         <h1 className="text-white text-xl mb-2  px-4 font-sans flex justify-between">
           <span className="mt-2">Tailwind CSS</span>
           <svg className="h-6 w-6 mt-4 text-purple-lightest fill-current" viewBox="0 0 32 32">
@@ -20,7 +40,12 @@ const Sidebar = () => {
           <span className="text-white">Olivia</span>
         </div>
 
-        <div className="px-4 mb-2 text-gray-100 opacity-50">Channels</div>
+        <div className="opacity-50 flex px-4 -px-4 mb-2 flex-row justify-between items-center">
+          <div className="text-gray-100">Channels</div>
+          <button className="focus:outline-none" type="button" onClick={addChannelModal}>
+            <p className="text-gray-100 text-2xl">+</p>
+          </button>
+        </div>
         <div className="bg-green-600 mb-6 py-1 px-4 text-white font-semi-bold">
           <span className="pr-1 text-grey-light">#general</span>
         </div>
@@ -46,6 +71,7 @@ const Sidebar = () => {
 
         <div className="px-4 mb-3 font-sans text-gray-100 opacity-50">Applications</div>
       </div>
+      {isCreateChannelModalActive ? <CreateChannelModal /> : null}
     </div>
   )
 }

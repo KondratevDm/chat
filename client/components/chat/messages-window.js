@@ -1,10 +1,16 @@
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
+// import { nanoid } from 'nanoid'
 import Message from './message'
 import { getSocket } from '../../redux/index'
 
 const MessagesWindow = () => {
+  const isCreateChannelModalActive = useSelector(
+    (s) => s.createChannelModal.isCreateChannelModalActive
+  )
   const socket = getSocket()
   const [inputValue, setInputValue] = useState('')
+  // const [messagesArr, setMessagesArr] = useState([])
 
   const onChange = (e) => {
     setInputValue(e.target.value)
@@ -24,14 +30,18 @@ const MessagesWindow = () => {
   }
 
   // socket.on('chat message', function (msg) {
-    // setMessagesArr([...messagesArr, msg])
-    // document.createElement(<Message />, null, msg)
-    // item.textContent = msg
-    // document.getElementById('messages').appendChild(item)
+  //   setMessagesArr([...messagesArr, msg])
+  //   // console.log(messagesArr, msg)
   // })
 
   return (
-    <div className="w-5/6 ml-auto pt-0 h-full">
+    <div
+      className={
+        isCreateChannelModalActive
+          ? 'opacity-50 z-0 w-5/6 ml-auto pt-0 h-full'
+          : 'w-5/6 ml-auto pt-0 h-full'
+      }
+    >
       <div className="w-full flex flex-col my-auto h-full">
         {/* <!-- Top bar --> */}
         <div className="border-b flex px-6 items-center">
@@ -49,7 +59,7 @@ const MessagesWindow = () => {
           className="px-6 py-4 flex-1 overflow-scroll-x overflow-y-auto flex-grow flex flex-col"
         >
           {/* <!-- A message --> */}
-          <Message />
+            <Message />
 
           {/* <!-- Ignore --> */}
           {/* <br />

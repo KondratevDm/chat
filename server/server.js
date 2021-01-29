@@ -19,7 +19,6 @@ const Root = () => ''
 
 mongooseService.connect()
 
-
 try {
   // eslint-disable-next-line import/no-unresolved
   // ;(async () => {
@@ -38,8 +37,6 @@ let connections = []
 
 const port = process.env.PORT || 8090
 const server = express()
-
-
 
 const middleware = [
   cors(),
@@ -105,8 +102,6 @@ server.post('/api/v1/reg', (req, res) => {
   })
   user.save()
   console.log(`User ${req.body.username} added`)
-
-  // console.log(raseq.body)
   res.json({ status: 'ok' })
 })
 
@@ -168,14 +163,12 @@ io.on('connection', (socket) => {
 io.on('connection', (socket) => {
   socket.on('chat message', (msg) => {
     console.log('message: ' + msg)
+    socket.emit('chat message', msg)
   })
 })
 
-io.on('connection', (socket) => {
-  socket.on('chat message', (msg) => {
-    io.emit('chat message', msg)
-  })
-})
+
+
 
 // if (config.isSocketsEnabled) {
 //   const echo = sockjs.createServer()
