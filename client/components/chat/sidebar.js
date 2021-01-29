@@ -6,6 +6,7 @@ import { changeCreateChannelModalState } from '../../redux/reducers/createChanne
 
 
 const Sidebar = () => {
+
   const isCreateChannelModalActive = useSelector(
     (s) => s.createChannelModal.isCreateChannelModalActive
   )

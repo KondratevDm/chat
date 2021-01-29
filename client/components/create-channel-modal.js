@@ -1,6 +1,11 @@
-import React from 'react'
+import React, {} from 'react'
 import { useDispatch } from 'react-redux'
-import { changeCreateChannelModalState } from '../redux/reducers/createChannelModal'
+import {
+  changeCreateChannelModalState,
+  createChannelName,
+  createChannelDescription,
+  createChannel
+} from '../redux/reducers/createChannelModal'
 
 const CreateChannelModal = () => {
   const dispatch = useDispatch()
@@ -27,6 +32,9 @@ const CreateChannelModal = () => {
                 type="text"
                 placeholder="#new-channel"
                 autoComplete="off"
+                onChange={(e) => {
+                  dispatch(createChannelName(e.target.value))
+                }}
               />
             </div>
           </div>
@@ -39,6 +47,9 @@ const CreateChannelModal = () => {
                 type="text"
                 placeholder="#new-channel-description"
                 autoComplete="off"
+                onChange={(e) => {
+                  dispatch(createChannelDescription(e.target.value))
+                }}
               />
             </div>
           </div>
@@ -46,6 +57,9 @@ const CreateChannelModal = () => {
           <button
             type="button"
             className="hover:bg-green-600 uppercase bg-purple-900 text-white px-3 py-2 rounded w-full"
+            onClick={() => {
+              dispatch(createChannel())
+            }}
           >
             Create
           </button>

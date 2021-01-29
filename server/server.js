@@ -13,6 +13,7 @@ import passportJWT from './services/passport.js'
 import auth from './middleware/auth'
 import Html from '../client/html'
 import User from './model/User.model'
+import Channel from './model/Channels.model'
 import config from './config'
 
 const Root = () => ''
@@ -62,7 +63,6 @@ server.get('/api/v1/test/cookies', (req, res) => {
 })
 
 server.post('/api/v1/auth', async (req, res) => {
-  console.log(req.body)
   try {
     const user = await User.findAndValidateUser(req.body)
     const payload = { uid: user.id }
@@ -105,6 +105,22 @@ server.post('/api/v1/reg', (req, res) => {
   res.json({ status: 'ok' })
 })
 
+server.post('/api/v1/newchannel', async (req, res) => {
+  console.log(req.body)
+  try {
+    const channel = new Channel({
+      channelName: req.body.newChannelName,
+      channelDescription: req.body.newChannelDescription
+    })
+    await channel.save()
+    console.log(`Channel ${req.body.newChannelName} added`)
+    res.json({ status: 'ok' })
+  } catch (err) {
+    console.log(err)
+    res.json({ status: 'error', err })
+  }
+})
+
 server.use('/api/', (req, res) => {
   res.status(404)
   res.end()
@@ -138,6 +154,15 @@ server.get('/*', (req, res) => {
   )
 })
 
+
+
+
+
+
+
+
+
+
 // const app = server.listen(port)
 
 // const app = require('express')()
@@ -166,9 +191,6 @@ io.on('connection', (socket) => {
     socket.emit('chat message', msg)
   })
 })
-
-
-
 
 // if (config.isSocketsEnabled) {
 //   const echo = sockjs.createServer()
