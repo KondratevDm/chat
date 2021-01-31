@@ -1,20 +1,38 @@
-import React, { } from 'react'
+import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import axios from 'axios'
 import CreateChannelModal from '../create-channel-modal'
 import { changeCreateChannelModalState } from '../../redux/reducers/createChannelModal'
-
-
+import { getChannelsInfo } from '../../redux/reducers/channels'
 
 const Sidebar = () => {
-
+  // const сhannels = useSelector((s) => s.channels.channels)
+  const [channelsName, setChannelsName] = useState([])
   const isCreateChannelModalActive = useSelector(
     (s) => s.createChannelModal.isCreateChannelModalActive
   )
+
   const dispatch = useDispatch()
 
   const addChannelModal = () => {
     dispatch(changeCreateChannelModalState())
   }
+
+  function getChannelsName() {
+    axios.get('/api/v1/channels').then(({ data }) => {
+      dispatch(getChannelsInfo(JSON.stringify(data.channels)))
+      setChannelsName(data.channels.map((e) => e.channelName))
+    })
+  }
+
+  useEffect(() => {
+    getChannelsName()
+  }, [])
+
+  // useEffect(() => {
+  //   setChannelsName(сhannels.map((e) => e.channelName))
+  // }, [сhannels])
 
   return (
     <div>
@@ -36,20 +54,36 @@ const Sidebar = () => {
             </g>
           </svg>
         </h1>
+
         <div className="flex items-center -mt-1 mb-6 px-4">
           <span className="border bg-green-600 rounded-full block w-3 h-3 mr-2" />
           <span className="text-white">Olivia</span>
         </div>
 
-        <div className="opacity-50 flex px-4 -px-4 mb-2 flex-row justify-between items-center">
-          <div className="text-gray-100">Channels</div>
-          <button className="focus:outline-none" type="button" onClick={addChannelModal}>
-            <p className="text-gray-100 text-2xl">+</p>
-          </button>
+        <div className="mb-6">
+          <div className="opacity-50 flex px-4 -px-4 flex-row justify-between items-center">
+            <div className="text-gray-100">Channels</div>
+            <button className="focus:outline-none" type="button" onClick={addChannelModal}>
+              <p className="text-gray-100 text-2xl">+</p>
+            </button>
+          </div>
+
+          {channelsName.map((element) => (
+            <div key={element._id} className="py-1 px-4 text-white font-semi-bold">
+              <Link
+                to={`/chat/${element}`}
+                className="flex flex-row transform hover:translate-x-2 transition-transform ease-in duration-200"
+              >
+                <span className="mr-2 opacity-50 text-lg text-grey-100">#</span>
+                <span className="text-gray-100">{element}</span>
+              </Link>
+            </div>
+          ))}
         </div>
-        <div className="bg-green-600 mb-6 py-1 px-4 text-white font-semi-bold">
-          <span className="pr-1 text-grey-light">#general</span>
-        </div>
+
+        {/* <div className="bg-green-600 mb-6 py-1 px-4 text-white font-semi-bold">
+          <span className="pr-1 text-grey-light">general</span>
+        </div> */}
 
         <div className="px-4 mb-3 text-gray-100 opacity-50">Direct Messages</div>
 

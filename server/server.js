@@ -2,7 +2,6 @@ import express from 'express'
 import path from 'path'
 import cors from 'cors'
 import bodyParser from 'body-parser'
-// import sockjs from 'sockjs'
 import { renderToStaticNodeStream } from 'react-dom/server'
 import React from 'react'
 import cookieParser from 'cookie-parser'
@@ -15,7 +14,7 @@ import Html from '../client/html'
 import User from './model/User.model'
 import Channel from './model/Channels.model'
 import config from './config'
-
+// const { writeFile } = require('fs').promises
 const Root = () => ''
 
 mongooseService.connect()
@@ -121,6 +120,16 @@ server.post('/api/v1/newchannel', async (req, res) => {
   }
 })
 
+server.get('/api/v1/channels', async (req, res) => {
+  try {
+    const channels = await Channel.find()
+    // writeFile(`${__dirname}/channels.json`, JSON.stringify(channels), { encoding: 'utf8' })
+    res.json({ channels })
+  } catch (err) {
+    res.json({ status: 'error', err })
+  }
+})
+
 server.use('/api/', (req, res) => {
   res.status(404)
   res.end()
@@ -153,15 +162,6 @@ server.get('/*', (req, res) => {
     })
   )
 })
-
-
-
-
-
-
-
-
-
 
 // const app = server.listen(port)
 

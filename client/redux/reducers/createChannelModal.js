@@ -62,7 +62,7 @@ export function createChannel() {
       .then((r) => r.json())
       .then((data) => {
         dispatch({ type: CREATE_СHANNEL, token: data.token })
-        // history.push('/login')
+        window.location = ''
       })
   }
 }

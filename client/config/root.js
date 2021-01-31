@@ -83,6 +83,7 @@ const RootComponent = (props) => {
             <OnlyAnonymousRoute exact path="/login" component={() => <Login />} />
             <OnlyAnonymousRoute exact path="/registration" component={() => <Registration />} />
             <PrivateRoute exact path="/chat" component={() => <Chat />} />
+            <PrivateRoute exact path="/chat/*" component={() => <Chat />} />
             <Route component={() => <NotFound />} />
           </Switch>
         </Startup>
