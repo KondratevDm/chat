@@ -1,13 +1,34 @@
-import React, { useState } from 'react'
+import React, {
+  useState,
+   useEffect
+} from 'react'
 import { useSelector } from 'react-redux'
 // import { nanoid } from 'nanoid'
+import axios from 'axios'
 import Message from './message'
 import { getSocket } from '../../redux/index'
 
 const MessagesWindow = () => {
+  const [activeChannelName, setActiveChannelName] = useState('')
+  const [activeChannelDescription, setActiveChannelDescription] = useState('')
+  const activeChannel = useSelector((s) => s.channels.activeChannel)
   const isCreateChannelModalActive = useSelector(
     (s) => s.createChannelModal.isCreateChannelModalActive
   )
+
+  function getChannelData() {
+    axios.get(`/api/v1/chat/${activeChannel}`).then(({ data }) => {
+      setActiveChannelName(data[0].channelName)
+      setActiveChannelDescription(data[0].channelDescription)
+    })
+  }
+
+  useEffect(() => {
+    getChannelData()
+  }, [activeChannel])
+
+
+
   const socket = getSocket()
   const [inputValue, setInputValue] = useState('')
   // const [messagesArr, setMessagesArr] = useState([])
@@ -44,12 +65,12 @@ const MessagesWindow = () => {
     >
       <div className="w-full flex flex-col my-auto h-full">
         {/* <!-- Top bar --> */}
-        <div className="border-b flex px-6 items-center">
-          <div className="flex flex-col">
-            <h3 className=" mt-2 text-xl mb-1 font-bold"> #general</h3>
-            <div className="text-black opacity-75 font-light text-sm">
-              Chit-chattin` about ugly HTML and mixing of concerns.
-            </div>
+        <div className="border-b rounded-b-lg flex px-6 items-center h-10">
+          <div className="flex flex-row items-center">
+            <h1 className="text-2xl opacity-50 mr-1">#</h1>
+            <p className="text-lg opacity-75 font-bold mr-3">{activeChannelName}</p>
+            <span className="border-r-2 h-5 border-opacity-50 mr-3" />
+            <div className="opacity-50 text-base">{activeChannelDescription}</div>
           </div>
         </div>
 
@@ -59,7 +80,7 @@ const MessagesWindow = () => {
           className="px-6 py-4 flex-1 overflow-scroll-x overflow-y-auto flex-grow flex flex-col"
         >
           {/* <!-- A message --> */}
-            <Message />
+          <Message />
 
           {/* <!-- Ignore --> */}
           {/* <br />

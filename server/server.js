@@ -123,11 +123,20 @@ server.post('/api/v1/newchannel', async (req, res) => {
 server.get('/api/v1/channels', async (req, res) => {
   try {
     const channels = await Channel.find()
-    // writeFile(`${__dirname}/channels.json`, JSON.stringify(channels), { encoding: 'utf8' })
     res.json({ channels })
   } catch (err) {
     res.json({ status: 'error', err })
   }
+})
+
+server.get('/api/v1/chat/:channel', async (req, res) => {
+ const { channel } = req.params
+ try {
+   const activeChannel = await Channel.find({ channelName: channel })
+   res.json(activeChannel)
+ } catch (err) {
+   res.json({ status: 'error', err })
+ }
 })
 
 server.use('/api/', (req, res) => {

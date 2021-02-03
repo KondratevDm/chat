@@ -4,11 +4,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 import CreateChannelModal from '../create-channel-modal'
 import { changeCreateChannelModalState } from '../../redux/reducers/createChannelModal'
-import { getChannelsInfo } from '../../redux/reducers/channels'
+import { getChannelsInfo, updateActiveChannels } from '../../redux/reducers/channels'
 
 const Sidebar = () => {
-  // const сhannels = useSelector((s) => s.channels.channels)
+  const activeChannel = useSelector((s) => s.channels.activeChannel)
   const [channelsName, setChannelsName] = useState([])
+
   const isCreateChannelModalActive = useSelector(
     (s) => s.createChannelModal.isCreateChannelModalActive
   )
@@ -19,20 +20,22 @@ const Sidebar = () => {
     dispatch(changeCreateChannelModalState())
   }
 
-  function getChannelsName() {
+  function getChannelsData() {
     axios.get('/api/v1/channels').then(({ data }) => {
       dispatch(getChannelsInfo(JSON.stringify(data.channels)))
-      setChannelsName(data.channels.map((e) => e.channelName))
+      if (channelsName.length === 0) {
+        setChannelsName(data.channels.map((e) => e.channelName))
+      }
     })
   }
 
-  useEffect(() => {
-    getChannelsName()
-  }, [])
+  function updateActiveChannel(data) {
+    dispatch(updateActiveChannels(data))
+  }
 
-  // useEffect(() => {
-  //   setChannelsName(сhannels.map((e) => e.channelName))
-  // }, [сhannels])
+  useEffect(() => {
+    getChannelsData()
+  }, [])
 
   return (
     <div>
@@ -69,10 +72,20 @@ const Sidebar = () => {
           </div>
 
           {channelsName.map((element) => (
-            <div key={element._id} className="py-1 px-4 text-white font-semi-bold">
+            <div
+              key={element._id}
+              className={
+                activeChannel === element
+                  ? 'bg-green-600 py-1 px-4 text-white font-semi-bold'
+                  : 'py-1 px-4 text-white font-semi-bold'
+              }
+            >
               <Link
                 to={`/chat/${element}`}
                 className="flex flex-row transform hover:translate-x-2 transition-transform ease-in duration-200"
+                onClick={() => {
+                  updateActiveChannel(element)
+                }}
               >
                 <span className="mr-2 opacity-50 text-lg text-grey-100">#</span>
                 <span className="text-gray-100">{element}</span>
