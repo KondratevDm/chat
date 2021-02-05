@@ -19,14 +19,9 @@ const OnlyAnonymousRoute = ({ component: Component, ...rest }) => {
   const auth = useSelector((s) => s.auth)
 
   const func = (props) =>
-    !!auth.user && !!auth.token ? (
-      <Redirect to={{ pathname: '/chat' }} />
-    ) : (
-      <Component {...props} />
-    )
+    !!auth.user && !!auth.token ? <Redirect to={{ pathname: '/chat' }} /> : <Component {...props} />
   return <Route {...rest} render={func} />
 }
-
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   const auth = useSelector((s) => s.auth)
@@ -82,8 +77,8 @@ const RootComponent = (props) => {
             <Route exact path="/dashboard" component={() => <Home />} />
             <OnlyAnonymousRoute exact path="/login" component={() => <Login />} />
             <OnlyAnonymousRoute exact path="/registration" component={() => <Registration />} />
-            <PrivateRoute exact path="/chat" component={() => <Chat />} />
-            <PrivateRoute exact path="/chat/*" component={() => <Chat />} />
+            <PrivateRoute exact path="/chat" component={Chat} />
+            <PrivateRoute exact path="/chat/*" component={Chat} />
             <Route component={() => <NotFound />} />
           </Switch>
         </Startup>

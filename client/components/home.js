@@ -4,8 +4,6 @@ import Login from './login'
 // import wave from '../assets/images/wave.jpg'
 
 const Home = () => {
-
-
   return (
     <div>
       <Head title="Hello" />

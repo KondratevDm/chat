@@ -1,7 +1,4 @@
-import React, {
-  useState,
-   useEffect
-} from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 // import { nanoid } from 'nanoid'
 import axios from 'axios'
@@ -12,6 +9,7 @@ const MessagesWindow = () => {
   const [activeChannelName, setActiveChannelName] = useState('')
   const [activeChannelDescription, setActiveChannelDescription] = useState('')
   const activeChannel = useSelector((s) => s.channels.activeChannel)
+
   const isCreateChannelModalActive = useSelector(
     (s) => s.createChannelModal.isCreateChannelModalActive
   )
@@ -26,8 +24,6 @@ const MessagesWindow = () => {
   useEffect(() => {
     getChannelData()
   }, [activeChannel])
-
-
 
   const socket = getSocket()
   const [inputValue, setInputValue] = useState('')
