@@ -8,6 +8,7 @@ import { getChannelsInfo, updateActiveChannels } from '../../redux/reducers/chan
 
 const Sidebar = () => {
   const activeChannel = useSelector((s) => s.channels.activeChannel)
+  const user = useSelector((s) => s.auth.user)
   const [channelsName, setChannelsName] = useState([])
 
   const isCreateChannelModalActive = useSelector(
@@ -47,7 +48,7 @@ const Sidebar = () => {
         }
       >
         <h1 className="text-white text-xl mb-2  px-4 font-sans flex justify-between">
-          <span className="mt-2">Tailwind CSS</span>
+          <span className="mt-2">Almost Slack :)</span>
           <svg className="h-6 w-6 mt-4 text-purple-lightest fill-current" viewBox="0 0 32 32">
             <g id="surface1">
               <path
@@ -60,7 +61,7 @@ const Sidebar = () => {
 
         <div className="flex items-center -mt-1 mb-6 px-4">
           <span className="border bg-green-600 rounded-full block w-3 h-3 mr-2" />
-          <span className="text-white">Olivia</span>
+          <span className="text-white -mt-1">{user.username}</span>
         </div>
 
         <div className="mb-6">
@@ -102,8 +103,8 @@ const Sidebar = () => {
 
         <div className="flex items-center mb-3 px-4">
           <span className="border bg-green-600 rounded-full block w-3 h-3 mr-2" />
-          <span className="text-white">
-            Olivia Dunham <i className="text-grey-100 text-sm opacity-50">(me)</i>
+          <span className="text-white -mt-1">
+            {user.username} <i className="text-grey-100 text-sm opacity-50">(me)</i>
           </span>
         </div>
 
@@ -116,8 +117,6 @@ const Sidebar = () => {
           <span className="border bg-grey-100 rounded-full block w-3 h-3 mr-2" />
           <span className="text-white">killgt</span>
         </div>
-
-        <div className="px-4 mb-3 font-sans text-gray-100 opacity-50">Applications</div>
       </div>
       {isCreateChannelModalActive ? <CreateChannelModal /> : null}
     </div>

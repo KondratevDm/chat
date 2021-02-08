@@ -10,6 +10,9 @@ const channelSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true
+  },
+  channelMessages: {
+    type: [Object],
   }
 })
 

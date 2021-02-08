@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 // import { nanoid } from 'nanoid'
 import axios from 'axios'
 import Message from './message'
 import { getSocket } from '../../redux/index'
+import { updateMessage, sendMessage, updateSendingTime } from '../../redux/reducers/message'
 
 const MessagesWindow = () => {
+  const dispatch = useDispatch()
   const [activeChannelName, setActiveChannelName] = useState('')
   const [activeChannelDescription, setActiveChannelDescription] = useState('')
   const activeChannel = useSelector((s) => s.channels.activeChannel)
@@ -21,21 +23,42 @@ const MessagesWindow = () => {
     })
   }
 
+  function getActualTime() {
+    let h = new Date().getHours()
+    let m = new Date().getMinutes()
+
+    h = h < 10 ? `0${h}` : h
+    m = m < 10 ? `0${m}` : m
+    const data = `${h}:${m}`
+    return data
+  }
+
   useEffect(() => {
     getChannelData()
   }, [activeChannel])
 
   const socket = getSocket()
+
+  socket.on('conn', function () {
+    console.log('кто-то присоединился к комнате NEWS')
+  })
+
+  // const http = require('http').createServer(server)
+  // const io = require('socket.io')(http)
+  // const socket = io('/chat/news')
+
   const [inputValue, setInputValue] = useState('')
-  // const [messagesArr, setMessagesArr] = useState([])
 
   const onChange = (e) => {
     setInputValue(e.target.value)
+    dispatch(updateMessage(e.target.value))
   }
 
   const buttonPressEvent = () => {
     if (inputValue) {
       socket.emit('chat message', inputValue)
+      dispatch(updateSendingTime(getActualTime()))
+      dispatch(sendMessage())
       setInputValue('')
     }
   }
@@ -45,11 +68,6 @@ const MessagesWindow = () => {
       buttonPressEvent()
     }
   }
-
-  // socket.on('chat message', function (msg) {
-  //   setMessagesArr([...messagesArr, msg])
-  //   // console.log(messagesArr, msg)
-  // })
 
   return (
     <div

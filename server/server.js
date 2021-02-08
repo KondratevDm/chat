@@ -130,13 +130,39 @@ server.get('/api/v1/channels', async (req, res) => {
 })
 
 server.get('/api/v1/chat/:channel', async (req, res) => {
- const { channel } = req.params
- try {
-   const activeChannel = await Channel.find({ channelName: channel })
-   res.json(activeChannel)
- } catch (err) {
-   res.json({ status: 'error', err })
- }
+  const { channel } = req.params
+  try {
+    const activeChannel = await Channel.find({ channelName: channel })
+    res.json(activeChannel)
+  } catch (err) {
+    res.json({ status: 'error', err })
+  }
+})
+
+server.put('/api/v1/chat/:channel', async (req, res) => {
+  const { channel } = req.params
+  const { body } = req
+  try {
+    await Channel.updateOne(
+      { channelName: channel },
+      { $push: { channelMessages: body } },
+      { upsert: true }
+    )
+    res.json({ status: 'ok' })
+  } catch (err) {
+    res.json({ status: 'error', err })
+  }
+})
+
+server.get('/api/v1/chat/messages/:channel', async (req, res) => {
+  const { channel } = req.params
+  try {
+    const activeChannel = await Channel.find({ channelName: channel })
+    const messages = activeChannel[0].channelMessages
+    res.json(messages)
+  } catch (err) {
+    res.json({ status: 'error', err })
+  }
 })
 
 server.use('/api/', (req, res) => {
@@ -188,9 +214,9 @@ http.listen(port, () => {
 })
 
 io.on('connection', (socket) => {
-  console.log('a user connected')
+  console.log(`a user connected`)
   socket.on('disconnect', () => {
-    console.log('user disconnected')
+    console.log(`user disconnected`)
   })
 })
 
@@ -199,6 +225,13 @@ io.on('connection', (socket) => {
     console.log('message: ' + msg)
     io.emit('chat message', msg)
   })
+})
+
+const chatNsp = io.of('/chat/news')
+chatNsp.on('conn', (socket) => {
+  console.log('someone connected to news channel')
+  nsp.emit('hi', 'Hello everyone!')
+  /* chat namespace listeners here */
 })
 
 // if (config.isSocketsEnabled) {
