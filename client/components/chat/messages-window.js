@@ -115,7 +115,7 @@ const MessagesWindow = () => {
             type="text"
             autoComplete="off"
             value={inputValue}
-            placeholder="Message to #general"
+            placeholder={`Message to #${activeChannel}`}
             className="w-full  mb-6 px-6 py-2 border-gray-700 border rounded-l-lg text-gray-900 font-light focus:outline-none"
             onChange={onChange}
             onKeyPress={enterPressEvent}
