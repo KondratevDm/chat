@@ -68,7 +68,7 @@ const Message = () => {
       ))}
 
       {messagesArr.map((element) => (
-        <div key={element.id} className="flex items-start mb-4">
+        <div key={element.id} className="flex items-start mt-4">
           {' '}
           <img
             src="https://i.imgur.com/qACoKgY.jpg"
