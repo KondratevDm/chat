@@ -28,6 +28,9 @@ const Message = () => {
     })
   }, [activeChannel])
 
+  // `https://ui-avatars.com/api/?size=40&name={element.username}&font-size=0.33&background=1967c3&color=fff&rounded=true`
+  // https://ui-avatars.com/api/?size=40&name=conddd&length=1&font-size=0.7&background=1967c3&color=fff&rounded=true
+
   return (
     <div className="w-5/6 pt-0 ">
       {newMessagesArr.map((element) => (
@@ -35,7 +38,8 @@ const Message = () => {
         <div key={element.id} className="flex items-start mb-4">
           {' '}
           <img
-            src="https://i.imgur.com/qACoKgY.jpg"
+            // src={element.username}
+            src={`https://ui-avatars.com/api/?size=40&name=${element.username}&length=1&font-size=0.5&background=44337a&color=fff`}
             className="w-10 h-10 rounded mr-3 mt-1"
             alt="profile-pic"
           />
