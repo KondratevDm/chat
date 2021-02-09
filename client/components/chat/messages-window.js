@@ -91,7 +91,7 @@ const MessagesWindow = () => {
         {/* <!-- Chat messages --> */}
         <div
           id="messages"
-          className="px-6 py-4 flex-1 overflow-scroll-x overflow-y-auto flex-grow flex flex-col"
+          className="px-6 flex-1 overflow-scroll-x overflow-y-auto flex-grow flex flex-col"
         >
           {/* <!-- A message --> */}
           <Message />
@@ -116,12 +116,12 @@ const MessagesWindow = () => {
             autoComplete="off"
             value={inputValue}
             placeholder="Message to #general"
-            className="w-full mt-2  mb-6 px-6 py-2 border-gray-700 border rounded-l-lg text-gray-900 font-light focus:outline-none"
+            className="w-full  mb-6 px-6 py-2 border-gray-700 border rounded-l-lg text-gray-900 font-light focus:outline-none"
             onChange={onChange}
             onKeyPress={enterPressEvent}
           />
 
-          <div className="mt-2">
+          <div className="">
             <button
               type="button"
               className="bg-white text-gray-900 border-gray-700 font-light rounded-r-lg border hover:border-green-600 hover:bg-green-500 focus:outline-none hover:text-white py-2 px-6 inline-flex items-center"

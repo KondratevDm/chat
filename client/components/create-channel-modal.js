@@ -30,7 +30,7 @@ const CreateChannelModal = () => {
               <input
                 className="tracking-wide focus:outline-none py-2 px-4 mb-3 leading-relaxed appearance-none block w-full bg-gray-200 border border-gray-200 rounded focus:outline-none focus:bg-white focus:border-gray-500"
                 type="text"
-                placeholder="#new-channel"
+                placeholder="new-channel"
                 autoComplete="off"
                 onChange={(e) => {
                   dispatch(createChannelName(e.target.value))
@@ -45,7 +45,7 @@ const CreateChannelModal = () => {
               <input
                 className="tracking-wide focus:outline-none py-2 px-4 mb-3 leading-relaxed appearance-none block w-full bg-gray-200 border border-gray-200 rounded focus:outline-none focus:bg-white focus:border-gray-500"
                 type="text"
-                placeholder="#new-channel-description"
+                placeholder="new-channel-description"
                 autoComplete="off"
                 onChange={(e) => {
                   dispatch(createChannelDescription(e.target.value))

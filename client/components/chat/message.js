@@ -22,20 +22,27 @@ const Message = () => {
   }, [messagesArr])
 
   useEffect(() => {
+    if (newMessagesArr.length !== 0) {
+      const lastItem = document.getElementsByClassName('flex items-start mt-4')[
+        document.getElementsByClassName('flex items-start mt-4').length - 1
+      ]
+      lastItem.scrollIntoView(false)
+    }
+  }, [newMessagesArr, messagesArr])
+
+  useEffect(() => {
     axios.get(`/api/v1/chat/messages/${activeChannel}`).then(({ data }) => {
       setNewMessagesArr(data)
       console.log(newMessagesArr)
     })
   }, [activeChannel])
 
-  // `https://ui-avatars.com/api/?size=40&name={element.username}&font-size=0.33&background=1967c3&color=fff&rounded=true`
-  // https://ui-avatars.com/api/?size=40&name=conddd&length=1&font-size=0.7&background=1967c3&color=fff&rounded=true
 
   return (
     <div className="w-5/6 pt-0 ">
       {newMessagesArr.map((element) => (
         /* {messagesArr.map((element) => ( */
-        <div key={element.id} className="flex items-start mb-4">
+        <div key={element.id} className="flex items-start mt-4">
           {' '}
           <img
             // src={element.username}
