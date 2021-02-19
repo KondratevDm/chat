@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 // import { nanoid } from 'nanoid'
 import axios from 'axios'
 import Message from './message'
+import Toggle from '../toggle'
 import { getSocket } from '../../redux/index'
 import { updateMessage, sendMessage, updateSendingTime } from '../../redux/reducers/message'
 
@@ -73,25 +74,28 @@ const MessagesWindow = () => {
     <div
       className={
         isCreateChannelModalActive
-          ? 'opacity-50 z-0 w-5/6 ml-auto pt-0 h-full'
-          : 'w-5/6 ml-auto pt-0 h-full'
+          ? ' z-0  ml-auto   pt-0 h-full w-full sm:w-2/3 md:w-3/4 lg:w-4/5 xl:w-5/6'
+          : 'ml-auto pt-0  z-0 h-full   sm:w-2/3  md:w-3/4 w-full lg:w-4/5 xl:w-5/6'
       }
     >
       <div className="w-full flex flex-col my-auto h-full">
         {/* <!-- Top bar --> */}
-        <div className="border-b rounded-b-lg flex px-6 items-center h-10">
-          <div className="flex flex-row items-center">
-            <h1 className="text-2xl opacity-50 mr-1">#</h1>
-            <p className="text-lg opacity-75 font-bold mr-3">{activeChannelName}</p>
-            <span className="border-r-2 h-5 border-opacity-50 mr-3" />
-            <div className="opacity-50 text-base">{activeChannelDescription}</div>
+        <div className="border-b  border-purple-900  flex px-6 items-center h-12">
+          <div className="flex w-full flex-row items-center">
+            <h1 className="text-2xl hidden md:block opacity-50 mr-1">#</h1>
+            <Toggle />
+            <p className="md:text-lg text-xl opacity-75 font-bold ml-auto mr-auto md:ml-0 md:mr-3">
+              {activeChannelName}
+            </p>
+            <span className="border-r-2 hidden md:block h-5 border-opacity-50 mr-3" />
+            <div className=" hidden md:block opacity-50 text-base">{activeChannelDescription}</div>
           </div>
         </div>
 
         {/* <!-- Chat messages --> */}
         <div
           id="messages"
-          className="px-6 flex-1 overflow-scroll-x overflow-y-auto flex-grow flex flex-col"
+          className="px-6 flex-1 break-all overflow-scroll-x overflow-y-auto flex-grow flex flex-col"
         >
           {/* <!-- A message --> */}
           <Message />
@@ -124,7 +128,7 @@ const MessagesWindow = () => {
           <div className="">
             <button
               type="button"
-              className="bg-white text-gray-900 border-gray-700 font-light rounded-r-lg border hover:border-green-600 hover:bg-green-500 focus:outline-none hover:text-white py-2 px-6 inline-flex items-center"
+              className="bg-white text-gray-900 border-gray-700 font-light rounded-r-lg border hover:border-green-600 hover:bg-green-600 focus:outline-none hover:text-white py-2 px-6 inline-flex items-center"
               onClick={buttonPressEvent}
             >
               <span className="mr-2">Send</span>

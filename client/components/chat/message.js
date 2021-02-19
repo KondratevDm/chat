@@ -80,7 +80,7 @@ const Message = () => {
               <span className="font-bold mr-2 font-sans">{user.username}</span>
               <span className="text-black text-sm opacity-50 font-light">{`${date.getHours()}:${date.getMinutes()}`}</span>
             </div>
-            <p id="" className="font-light text-gray-900">
+            <p id="" className="font-light break-all text-gray-900">
               {element}
             </p>
           </div>

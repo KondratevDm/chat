@@ -5,6 +5,7 @@ import reg from './reg'
 import createChannelModal from './createChannelModal'
 import channels from './channels'
 import message from './message'
+import toggle from './toggle'
 
 const createRootReducer = (history) =>
   combineReducers({
@@ -13,7 +14,8 @@ const createRootReducer = (history) =>
     reg,
     createChannelModal,
     channels,
-    message
+    message,
+    toggle
   })
 
 export default createRootReducer
