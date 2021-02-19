@@ -73,8 +73,8 @@ const RootComponent = (props) => {
       <RouterSelector history={history} location={props.location} context={props.context}>
         <Startup>
           <Switch>
-            {/* <Route exact path="/" component={() => <Home />} /> */}
-            <Route exact path="/" component={() => <Chat />} />
+            <Route exact path="/" component={() => <Home />} />
+            {/* <Route exact path="/" component={() => <Chat />} /> */}
             <Route exact path="/dashboard" component={() => <Home />} />
             <OnlyAnonymousRoute exact path="/login" component={() => <Login />} />
             <OnlyAnonymousRoute exact path="/registration" component={() => <Registration />} />
