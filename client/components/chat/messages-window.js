@@ -25,12 +25,30 @@ const MessagesWindow = () => {
   }
 
   function getActualTime() {
-    let h = new Date().getHours()
-    let m = new Date().getMinutes()
+    const monthsArr = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+  ]
+    const time =new Date()
+    let hour = time.getHours()
+    let minute = time.getMinutes()
+    const day = time.getDate()
+    const month = monthsArr[time.getMonth()]
 
-    h = h < 10 ? `0${h}` : h
-    m = m < 10 ? `0${m}` : m
-    const data = `${h}:${m}`
+    hour = hour < 10 ? `0${hour}` : hour
+    minute = minute < 10 ? `0${minute}` : minute
+
+    const data = `${hour}:${minute}, ${day} ${month}`
     return data
   }
 
@@ -43,10 +61,6 @@ const MessagesWindow = () => {
   socket.on('conn', function () {
     console.log('кто-то присоединился к комнате NEWS')
   })
-
-  // const http = require('http').createServer(server)
-  // const io = require('socket.io')(http)
-  // const socket = io('/chat/news')
 
   const [inputValue, setInputValue] = useState('')
 
@@ -114,7 +128,7 @@ const MessagesWindow = () => {
           <br /> */}
         </div>
 
-        <div className="flex ml-6 mr-6 mt-10  ">
+        <div className="flex mx-6 mt-10  ">
           <input
             type="text"
             autoComplete="off"

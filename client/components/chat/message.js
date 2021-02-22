@@ -4,7 +4,7 @@ import axios from 'axios'
 import { getSocket } from '../../redux/index'
 
 const Message = () => {
-  const date = new Date()
+
   const [messagesArr, setMessagesArr] = useState([])
   const [newMessagesArr, setNewMessagesArr] = useState([])
   const socket = getSocket()
@@ -37,15 +37,42 @@ const Message = () => {
     })
   }, [activeChannel])
 
+  function getActualTime() {
+    const monthsArr = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+    ]
+    const time = new Date()
+    let hour = time.getHours()
+    let minute = time.getMinutes()
+    const day = time.getDate()
+    const month = monthsArr[time.getMonth()]
+
+    hour = hour < 10 ? `0${hour}` : hour
+    minute = minute < 10 ? `0${minute}` : minute
+
+    const data = `${hour}:${minute}, ${day} ${month}`
+    return data
+  }
+
+  // console.log(messagesArr)
 
   return (
     <div className="w-5/6 pt-0 ">
       {newMessagesArr.map((element) => (
-        /* {messagesArr.map((element) => ( */
         <div key={element.id} className="flex items-start mt-4">
           {' '}
           <img
-            // src={element.username}
             src={`https://ui-avatars.com/api/?size=40&name=${element.username}&length=1&font-size=0.5&background=44337a&color=fff`}
             className="w-10 h-10 rounded mr-3 mt-1"
             alt="profile-pic"
@@ -53,15 +80,13 @@ const Message = () => {
           <div className="flex flex-col">
             <div className="flex items-end">
               <span className="font-bold mr-2 font-sans">{element.username}</span>
-              {/* <span className="font-bold mr-2 font-sans">{user.username}</span> */}
-              {/* <span className="text-black text-sm opacity-50 font-light">{`${date.getHours()}:${date.getMinutes()}`}</span> */}
+
               <span className="text-black text-sm opacity-50 font-light">
                 {element.sendingTime}
               </span>
             </div>
             <p id="" className="font-light text-gray-900">
               {element.message}
-              {/* {element} */}
             </p>
           </div>
         </div>
@@ -71,14 +96,14 @@ const Message = () => {
         <div key={element.id} className="flex items-start mt-4">
           {' '}
           <img
-            src="https://i.imgur.com/qACoKgY.jpg"
+            src={`https://ui-avatars.com/api/?size=40&name=${user.username}&length=1&font-size=0.5&background=44337a&color=fff`}
             className="w-10 h-10 rounded mr-3 mt-1"
             alt="profile-pic"
           />
           <div className="flex flex-col">
             <div className="flex items-end">
               <span className="font-bold mr-2 font-sans">{user.username}</span>
-              <span className="text-black text-sm opacity-50 font-light">{`${date.getHours()}:${date.getMinutes()}`}</span>
+              <span className="text-black text-sm opacity-50 font-light">{getActualTime()}</span>
             </div>
             <p id="" className="font-light break-all text-gray-900">
               {element}
