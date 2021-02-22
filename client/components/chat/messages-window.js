@@ -114,7 +114,7 @@ const MessagesWindow = () => {
           <br /> */}
         </div>
 
-        <div className="flex ml-6 mr-6 mt-10  overflow-hidden">
+        <div className="flex ml-6 mr-6 mt-10  ">
           <input
             type="text"
             autoComplete="off"

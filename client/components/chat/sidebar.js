@@ -46,6 +46,8 @@ const Sidebar = () => {
   useEffect(() => {
     getChannelsData()
   }, [])
+
+
   return (
     <CSSTransition
       in={isSidebarToggleModalActive}
@@ -53,11 +55,6 @@ const Sidebar = () => {
       timeout={500}
       // unmountOnExit
       appear="true"
-      // className={
-      //   isSidebarToggleModalActive
-      //     ? 'w-8/12  sm:block sm:w-1/3 md:w-1/4 absolute z-10 lg:w-1/5 xl:w-1/6'
-      //     : 'hidden sm:block sm:w-1/3 md:w-1/4 absolute lg:w-1/5 xl:w-1/6'
-      // }
     >
       <div
         className={
@@ -67,11 +64,6 @@ const Sidebar = () => {
         }
       >
         <div
-          // className={
-          //   isCreateChannelModalActive
-          //     ? 'bg-purple-900 text-purple-lighter h-screen hidden sm:block sm:w-1/3 md:w-1/4 absolute lg:w-1/5 xl:w-1/6  opacity-50'
-          //     : 'bg-purple-900 text-purple-lighter h-screen hidden sm:block sm:w-1/3 md:w-1/4 absolute lg:w-1/5 xl:w-1/6 '
-          // }
           className={
             isCreateChannelModalActive
               ? 'bg-purple-900 text-purple-lighter   w-full absolute h-screen '
@@ -124,6 +116,7 @@ const Sidebar = () => {
                   className="flex flex-row transform hover:translate-x-2 transition-transform ease-in duration-200"
                   onClick={() => {
                     updateActiveChannel(element)
+                    // showSidebar()
                   }}
                 >
                   <span className="mr-2 opacity-50 text-lg text-grey-100">#</span>
