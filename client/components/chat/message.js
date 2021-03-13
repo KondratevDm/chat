@@ -33,7 +33,6 @@ const Message = () => {
   useEffect(() => {
     axios.get(`/api/v1/chat/messages/${activeChannel}`).then(({ data }) => {
       setNewMessagesArr(data)
-      console.log(newMessagesArr)
     })
   }, [activeChannel])
 
@@ -65,7 +64,7 @@ const Message = () => {
     return data
   }
 
-  // console.log(messagesArr)
+
 
   return (
     <div className="w-5/6 pt-0 ">

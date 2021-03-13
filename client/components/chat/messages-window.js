@@ -58,9 +58,7 @@ const MessagesWindow = () => {
 
   const socket = getSocket()
 
-  socket.on('conn', function () {
-    console.log('кто-то присоединился к комнате NEWS')
-  })
+  
 
   const [inputValue, setInputValue] = useState('')
 
