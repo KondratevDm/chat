@@ -31,7 +31,7 @@
 * JsonWebToken
 
 ## You can try it!
-```Shell
+
 This project is hosted on Heroku => [chat-almost-slack](https://chat-almost-slack.herokuapp.com/)
-```
+
 
