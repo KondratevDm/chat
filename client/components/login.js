@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { updateEmailField, updatePasswordField, loginFunction } from '../redux/reducers/auth'
@@ -9,7 +9,7 @@ import Head from './head'
 
 const Login = () => {
   const dispatch = useDispatch()
-  // const email = useSelector((s) => s.auth.email)
+  const errorMessage = useSelector((s) => s.auth.errorMessage)
   // const password = useSelector((s) => s.auth.password)
 
   const formik = useFormik({
@@ -34,6 +34,20 @@ const Login = () => {
       <div className="w-5/6 sm:w-3/5 md:w-2/4 lg:w-2/5 xl:w-1/4 2xl:w-1/4 px-6 flex justify-center flex-col  h-full mx-auto ">
         <form onSubmit={formik.handleSubmit}>
           <p className="font-medium text-center text-2xl mb-5 text-black">Login a profile</p>
+
+          <div
+            className={
+              errorMessage
+              ? "bg-red-200  py-4 mx-2 my-4 rounded-md text-lg flex items-center mx-auto w-full"
+              : "hidden"
+            }
+          >
+            <div className="ml-auto mr-auto">
+              <span className="text-red-800 text-sm">The email address or password is incorrect</span>
+            </div>
+
+          </div>
+
 
           <div className="py-2">
             <div className="flex flex-row justify-between">
@@ -74,9 +88,9 @@ const Login = () => {
           <button
             type="submit"
             className="mt-3 text-lg focus:outline-none font-semibold bg-gray-800 w-full text-white rounded-lg px-6 py-3 block shadow-xl hover:text-white hover:bg-black"
-            // onClick={() => {
-            //   dispatch(loginFunction())
-            // }}
+          // onClick={() => {
+          //   dispatch(loginFunction())
+          // }}
           >
             Log in
           </button>

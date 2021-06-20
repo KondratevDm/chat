@@ -1,12 +1,12 @@
+import axios from 'axios'
 import Cookies from 'universal-cookie'
 import { history } from '..'
-
-
 
 
 const UPDATE_EMAIL = 'UPDATE_LOGIN'
 const UPDATE_PASSWORD = 'UPDATE_PASSWORD'
 const LOGIN = 'LOGIN'
+const ERROR_MESSAGE = 'ERROR_MESSAGE'
 
 const cookies = new Cookies()
 
@@ -14,7 +14,8 @@ const initialState = {
   email: '',
   password: '',
   token: cookies.get('token'),
-  user: {}
+  user: {},
+  errorMessage: false
 }
 
 export default (state = initialState, action) => {
@@ -27,6 +28,9 @@ export default (state = initialState, action) => {
     }
     case LOGIN: {
       return { ...state, token: action.token, password: '', user: action.user }
+    }
+    case ERROR_MESSAGE: {
+      return { ...state, errorMessage: true }
     }
     default:
       return state
@@ -44,23 +48,50 @@ export function updatePasswordField(password) {
 export function loginFunction() {
   return (dispatch, getState) => {
     const { email, password } = getState().auth
-    fetch('/api/v1/auth', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
+    axios.post('/api/v1/auth',
+      JSON.stringify({
         email,
         password
-      })
+      }), {
+      headers: {
+        'Content-Type': 'application/json'
+      }
     })
-      .then((r) => r.json())
-      .then((data) => {
+      .then(({data}) => {
         dispatch({ type: LOGIN, token: data.token, user: data.user })
         history.push('/chat')
       })
+      .catch((err) => {
+        dispatch({ type: ERROR_MESSAGE })
+        console.log(err)
+      })
   }
 }
+
+// export function loginFunction() {
+//   return (dispatch, getState) => {
+//     const { email, password } = getState().auth
+//     fetch('/api/v1/auth', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json'
+//       },
+//       body: JSON.stringify({
+//         email,
+//         password
+//       })
+//     })
+//       .then((r) => r.json())
+//       .then((data) => {
+//         dispatch({ type: LOGIN, token: data.token, user: data.user })
+//         history.push('/chat')
+//       })
+//       .catch((err) => {
+//         dispatch({ type: ERROR_MESSAGE })
+//         console.log(err)
+//       })
+//   }
+// }
 
 export function trySignIn() {
   return (dispatch) => {

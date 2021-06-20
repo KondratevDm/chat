@@ -7,7 +7,7 @@ const Chat = () => {
 
   return (
     <div className="h-screen">
-      <Head title="Chat" />
+      <Head title="Chat Almost Slack" />
       <Sidebar />
       <MessagesWindow />
     </div>

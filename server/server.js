@@ -68,13 +68,10 @@ server.post('/api/v1/auth', async (req, res) => {
     const token = jwt.sign(payload, config.secret, { expiresIn: '48h' })
     delete user.password
     res.cookie('token', token, { maxAge: 1000 * 60 * 60 * 48 })
-    // connection.forEach((c) => {
-    //   c.write(JSON.stringify({ type: 'SHOW_MESSAGE', message: `${user.email} just logged in` }))
-    // })
     res.json({ status: 'ok', token, user })
   } catch (err) {
     console.log(err)
-    res.json({ status: 'error', err })
+    res.status(501).json({ status: 'Error', err })
   }
 })
 
@@ -105,14 +102,13 @@ server.post('/api/v1/reg', (req, res) => {
 })
 
 server.post('/api/v1/newchannel', async (req, res) => {
-  console.log(req.body)
   try {
     const channel = new Channel({
       channelName: req.body.newChannelName,
       channelDescription: req.body.newChannelDescription
     })
     await channel.save()
-    console.log(`Channel ${req.body.newChannelName} added`)
+    console.log(`Channel ${req.body.newChannelName} added to the DataBase`)
     res.json({ status: 'ok' })
   } catch (err) {
     console.log(err)
@@ -165,6 +161,15 @@ server.get('/api/v1/chat/messages/:channel', async (req, res) => {
   }
 })
 
+server.get('/api/v1/getOfflineUsers', async (req, res) => {
+  try {
+    const offlineUsers = await User.find()
+    res.json(offlineUsers.map((it) => it.username))
+  } catch (err) {
+    res.json({ status: 'error', err })
+  }
+})
+
 server.use('/api/', (req, res) => {
   res.status(404)
   res.end()
@@ -198,13 +203,7 @@ server.get('/*', (req, res) => {
   )
 })
 
-// const app = server.listen(port)
 
-// const app = require('express')()
-// const http = require('http').createServer(app)
-// app.get('/test', (req, res) => {
-//   res.send('hello')
-// })
 
 const http = require('http').createServer(server)
 const io = require('socket.io')(http)
@@ -234,17 +233,6 @@ chatNsp.on('conn', (socket) => {
   /* chat namespace listeners here */
 })
 
-// if (config.isSocketsEnabled) {
-//   const echo = sockjs.createServer()
-//   echo.on('connection', (conn) => {
-//     connections.push(conn)
-//     conn.on('data', async () => {})
 
-//     conn.on('close', () => {
-//       connections = connections.filter((c) => c.readyState !== 3)
-//     })
-//   })
-//   echo.installHandlers(app, { prefix: '/ws' })
-// }
 
 console.log(`Serving at http://localhost:${port}`)

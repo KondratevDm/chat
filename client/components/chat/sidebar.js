@@ -13,6 +13,9 @@ const Sidebar = () => {
   const activeChannel = useSelector((s) => s.channels.activeChannel)
   const user = useSelector((s) => s.auth.user)
   const [channelsName, setChannelsName] = useState([])
+  const [onlineUsersToggleState, setOnlineUsersToggleState] = useState(false)
+  const [offlineUsersToggleState, setOfflineUsersToggleState] = useState(false)
+  const [offlineUsers, setOfflineUsers] = useState([])
 
   const isCreateChannelModalActive = useSelector(
     (s) => s.createChannelModal.isCreateChannelModalActive
@@ -35,6 +38,20 @@ const Sidebar = () => {
     })
   }
 
+  function getOfflineUsers() {
+    axios.get('/api/v1/getOfflineUsers').then(({ data }) => {
+      setOfflineUsers(data)
+    })
+  }
+
+  function changeOnlineUsersToggleState() {
+    setOnlineUsersToggleState(!onlineUsersToggleState)
+  }
+
+  function changeOfflineUsersToggleState() {
+    setOfflineUsersToggleState(!offlineUsersToggleState)
+  }
+
   function updateActiveChannel(data) {
     dispatch(updateActiveChannels(data))
   }
@@ -45,6 +62,7 @@ const Sidebar = () => {
 
   useEffect(() => {
     getChannelsData()
+    getOfflineUsers()
   }, [])
 
 
@@ -70,8 +88,8 @@ const Sidebar = () => {
               : 'bg-purple-900 text-purple-lighter  w-full absolute h-screen'
           }
         >
-          <div className="text-white  text-xl mb-2  pl-4 pr-3  font-sans flex justify-between">
-            <span className="mt-2">Almost Slack :)</span>
+          <div className="text-white  text-xl mb-6  pl-4 pr-3  font-sans flex justify-between">
+            <span className="mt-2 font-mono">AlmostSlack</span>
             <button
               className="block sm:hidden focus:outline-none"
               type="button"
@@ -87,11 +105,6 @@ const Sidebar = () => {
               />
             </g>
           </svg> */}
-          </div>
-
-          <div className="flex items-center -mt-1 mb-6 px-4">
-            <span className="border bg-green-600 rounded-full block w-3 h-3 mr-2" />
-            <span className="text-white -mt-1">{user.username}</span>
           </div>
 
           <div className="mb-6">
@@ -126,29 +139,71 @@ const Sidebar = () => {
             ))}
           </div>
 
-          {/* <div className="bg-green-600 mb-6 py-1 px-4 text-white font-semi-bold">
-          <span className="pr-1 text-grey-light">general</span>
-        </div> */}
+          <div className="px-4 ">
+            <div className="opacity-50 mb-3 flex flex-row justify-between items-center">
+              <div className="text-gray-100">Online users</div>
+              <button className="focus:outline-none" type="button" onClick={changeOnlineUsersToggleState}>
+                <p className={
+                  onlineUsersToggleState
+                    ? "text-gray-100 text-lg transform rotate-180 duration-200"
+                    : "text-gray-100 text-lg duration-200"
+                }>△</p>
+              </button>
+            </div>
 
-          <div className="px-4 mb-3 text-gray-100 opacity-50">Direct Messages</div>
+            <div className={
+              onlineUsersToggleState
+                ? "block overflow-y-auto max-h-32"
+                : "hidden "
+            }>
+              <div className="flex items-center mb-3">
+                <span className="border bg-green-600 rounded-full block w-3 h-3 mr-2" />
+                <span className="text-white -mt-1">
+                  {user.username} <i className="text-grey-100 text-sm opacity-50">(me)</i>
+                </span>
+              </div>
 
-          <div className="flex items-center mb-3 px-4">
-            <span className="border bg-green-600 rounded-full block w-3 h-3 mr-2" />
-            <span className="text-white -mt-1">
-              {user.username} <i className="text-grey-100 text-sm opacity-50">(me)</i>
-            </span>
+            </div>
           </div>
 
-          <div className="flex items-center mb-3 px-4">
-            <span className="border bg-green-600 rounded-full block w-3 h-3 mr-2" />
-            <span className="text-white">Adam Bishop</span>
+
+          <div className="px-4">
+            <div className="opacity-50 mb-3 flex flex-row justify-between items-center">
+              <div className="text-gray-100">Offline users</div>
+              <button className="focus:outline-none" type="button" onClick={changeOfflineUsersToggleState}>
+                <p className={
+                  offlineUsersToggleState
+                    ? "text-gray-100 text-lg transform rotate-180 duration-200"
+                    : "text-gray-100 text-lg duration-200"
+                }>△</p>
+              </button>
+            </div>
+
+            <div className={
+              offlineUsersToggleState
+                ? "block overflow-y-auto max-h-32"
+                : "hidden"
+            }>
+
+              {offlineUsers.filter((it) => it !== user.username).map((element) => (
+                <div key={element} className="flex items-center mb-3">
+                  <span className="border opacity-50 bg-gray-100 rounded-full block w-3 h-3 mr-2" />
+                  <span className="text-white -mt-1">{element}</span>
+                </div>
+              ))}
+            </div>
           </div>
+
+
+          {/* <div className="px-4 mb-3 text-gray-100 opacity-50">Offline users</div>
 
           <div className="flex items-center mb-4 px-4">
-            <span className="border bg-grey-100 rounded-full block w-3 h-3 mr-2" />
+            <span className="border bg-gray-100 rounded-full block w-3 h-3 mr-2" />
             <span className="text-white">killgt</span>
-          </div>
+          </div> */}
+
         </div>
+
         <CSSTransition
           in={isCreateChannelModalActive}
           classNames="alert"
