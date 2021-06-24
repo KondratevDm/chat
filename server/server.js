@@ -14,6 +14,7 @@ import Html from '../client/html'
 import User from './model/User.model'
 import Channel from './model/Channels.model'
 import config from './config'
+import { instanceOf } from 'prop-types'
 // const { writeFile } = require('fs').promises
 const Root = () => ''
 
@@ -207,31 +208,93 @@ server.get('/*', (req, res) => {
 
 const http = require('http').createServer(server)
 const io = require('socket.io')(http)
+// let connections = []
 
 http.listen(port, () => {
   console.log(`listening on *:${port}`)
 })
 
-io.on('connection', (socket) => {
-  console.log(`a user connected`)
+// io.on('connection', (socket) => {
+//   let { token } = socket.handshake.auth
+//   console.log(`a user ${socket.id}________________${token} connected`)
+//   socket.on('disconnect', () => {
+//     console.log(`user disconnected`)
+//   })
+// })
+
+
+// io.sockets.on('connection', async function (socket) {
+//   let { token } = socket.handshake.auth
+//   try {
+//     if (typeof token !== 'undefined') {
+//       const jwtUser = jwt.verify(token, config.secret)
+//       const user = await User.findById(jwtUser.uid)
+//       console.log(`${user.username} connected`)
+//       connections.push(user.username)
+//     } else {
+//       socket.userId = 'guest'
+//     }
+//   } catch (e) {
+//     console.log(e)
+//   }
+
+//   console.log(connections)
+// })
+
+let onlineUsers = []
+
+io.on('connection', async function (socket) {
+  const { token } = socket.handshake.auth
+  const jwtUser = jwt.verify(token, config.secret)
+  const user = await User.findById(jwtUser.uid)
+  console.log(`${user.username} connected`)
+  onlineUsers.push(user.username)
+  console.log(onlineUsers)
+
+  socket.on('Join chat', () => {
+    io.emit('Online users', onlineUsers)
+  })
+
+  socket.on('Change Room', (data) => {
+    socket.join(data)
+    console.log('сокет подписался на', data)
+  })
+
+  socket.on('chat message', (data) => {
+    console.log(`message ${data.message} from ${data.user} to #${data.room} `)
+    io.to(data.room).emit('chat message', data)
+  })
+  
+  // io.emit('Online users', onlineUsers)
+
   socket.on('disconnect', () => {
-    console.log(`user disconnected`)
+    onlineUsers = onlineUsers.filter((it) => it !== user.username)
+    console.log(`${user.username} disconnected`)
+    console.log(onlineUsers)
+    io.emit('Online users', onlineUsers)
   })
 })
 
-io.on('connection', (socket) => {
-  socket.on('chat message', (msg) => {
-    console.log('message: ' + msg)
-    io.emit('chat message', msg)
-  })
-})
+// io.on('connection', (socket) => {
+//   socket.on('chat message', (data) => {
+//     console.log(`message ${data.message} from ${data.user} in ${data.room} channel`)
+//     io.to(data.room).emit('chat message', data)
+//   })
+// })
 
-const chatNsp = io.of('/chat/news')
-chatNsp.on('conn', (socket) => {
-  console.log('someone connected to news channel')
-  nsp.emit('hi', 'Hello everyone!')
-  /* chat namespace listeners here */
-})
+export default function getConnections() {
+  return connections
+}
+
+
+
+
+// io.on('connection', (socket) => {
+//   socket.on('chat message', (msg) => {
+//     console.log('message: ' + msg)
+//     io.emit('chat message', msg)
+//   })
+// })
 
 
 

@@ -8,11 +8,12 @@ import { getSocket } from '../../redux/index'
 import { updateMessage, sendMessage, updateSendingTime } from '../../redux/reducers/message'
 
 const MessagesWindow = () => {
+  const socket = getSocket()
   const dispatch = useDispatch()
   const [activeChannelName, setActiveChannelName] = useState('')
   const [activeChannelDescription, setActiveChannelDescription] = useState('')
   const activeChannel = useSelector((s) => s.channels.activeChannel)
-
+  const user = useSelector((s) => s.auth.user)
   const isCreateChannelModalActive = useSelector(
     (s) => s.createChannelModal.isCreateChannelModalActive
   )
@@ -54,9 +55,8 @@ const MessagesWindow = () => {
 
   useEffect(() => {
     getChannelData()
+    socket.emit('Change Room', activeChannel)
   }, [activeChannel])
-
-  const socket = getSocket()
 
   
 
@@ -67,9 +67,23 @@ const MessagesWindow = () => {
     dispatch(updateMessage(e.target.value))
   }
 
+  // const buttonPressEvent = () => {
+  //   if (inputValue) {
+  //     socket.emit('chat message', inputValue)
+  //     dispatch(updateSendingTime(getActualTime()))
+  //     dispatch(sendMessage())
+  //     setInputValue('')
+  //   }
+  // }
+
   const buttonPressEvent = () => {
     if (inputValue) {
-      socket.emit('chat message', inputValue)
+      socket.emit('chat message', {
+        message: inputValue,
+        user: user.username,
+        time: getActualTime(),
+        room: activeChannel
+      })
       dispatch(updateSendingTime(getActualTime()))
       dispatch(sendMessage())
       setInputValue('')

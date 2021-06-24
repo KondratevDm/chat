@@ -4,22 +4,51 @@ import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 import { CSSTransition } from 'react-transition-group'
 import CreateChannelModal from '../create-channel-modal'
+import { getSocket } from '../../redux/index'
 import { changeCreateChannelModalState } from '../../redux/reducers/createChannelModal'
 import { getChannelsInfo, updateActiveChannels } from '../../redux/reducers/channels'
 import { changeSidebarToggleState } from '../../redux/reducers/toggle'
 import '../../../style.css'
 
 const Sidebar = () => {
+  const socket = getSocket()
   const activeChannel = useSelector((s) => s.channels.activeChannel)
-  const user = useSelector((s) => s.auth.user)
+  // const user = useSelector((s) => s.auth.user)
   const [channelsName, setChannelsName] = useState([])
   const [onlineUsersToggleState, setOnlineUsersToggleState] = useState(false)
   const [offlineUsersToggleState, setOfflineUsersToggleState] = useState(false)
   const [offlineUsers, setOfflineUsers] = useState([])
+  const [onlineUsers, setOnlineUsers] = useState([])
 
   const isCreateChannelModalActive = useSelector(
     (s) => s.createChannelModal.isCreateChannelModalActive
   )
+
+  useEffect(() => {
+    const handler = function (data) {
+      console.log('дата получена', data)
+      setOnlineUsers(data)
+    }
+    socket.on('Online users', handler)
+  }, [onlineUsers])
+
+  useEffect(() => {
+    socket.emit('Join chat');
+  }, [])
+
+
+
+
+  // useEffect(() => {
+  //   const handler = function (data) {
+  //     setOnlineUsers(data)
+  //   }
+  //   socket.on('Remove offline users', handler)
+  // }, [onlineUsers])
+
+  // socket.on('Online users', (data) => {
+  //   setOnlineUsers(data)
+  // })
 
   const isSidebarToggleModalActive = useSelector((s) => s.toggle.isSidebarToggleModalActive)
 
@@ -156,12 +185,21 @@ const Sidebar = () => {
                 ? "block overflow-y-auto max-h-32"
                 : "hidden "
             }>
-              <div className="flex items-center mb-3">
+
+              {onlineUsers.map((element) => (
+                <div key={element} className="flex items-center mb-3">
+                  <span className="border bg-green-600 rounded-full block w-3 h-3 mr-2" />
+                  <span className="text-white -mt-1">
+                    {element}
+                  </span>
+                </div>
+              ))}
+              {/* <div className="flex items-center mb-3">
                 <span className="border bg-green-600 rounded-full block w-3 h-3 mr-2" />
                 <span className="text-white -mt-1">
                   {user.username} <i className="text-grey-100 text-sm opacity-50">(me)</i>
                 </span>
-              </div>
+              </div> */}
 
             </div>
           </div>
@@ -185,7 +223,7 @@ const Sidebar = () => {
                 : "hidden"
             }>
 
-              {offlineUsers.filter((it) => it !== user.username).map((element) => (
+              {offlineUsers.filter((it) => onlineUsers.indexOf(it) === -1).map((element) => (
                 <div key={element} className="flex items-center mb-3">
                   <span className="border opacity-50 bg-gray-100 rounded-full block w-3 h-3 mr-2" />
                   <span className="text-white -mt-1">{element}</span>

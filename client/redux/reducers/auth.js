@@ -59,7 +59,7 @@ export function loginFunction() {
     })
       .then(({data}) => {
         dispatch({ type: LOGIN, token: data.token, user: data.user })
-        history.push('/chat')
+        history.push('/chat/general')
       })
       .catch((err) => {
         dispatch({ type: ERROR_MESSAGE })
@@ -99,7 +99,7 @@ export function trySignIn() {
       .then((r) => r.json())
       .then((data) => {
         dispatch({ type: LOGIN, token: data.token, user: data.user })
-        history.push('/chat')
+        history.push('/chat/general')
       })
   }
 }
