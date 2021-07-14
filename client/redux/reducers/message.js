@@ -1,10 +1,16 @@
+import { getSocket } from '../index'
+
 const UPDATE_MESSAGE = 'UPDATE_MESSAGE'
 const UPDATE_SENDING_TIME = 'UPDATE_SENDING_TIME'
 const SEND = 'SEND'
+const UPDATE_MESSAGES_FROM_SOCKET = 'UPDATE_MESSAGES_FROM_SOCKET'
+
+
 
 const initialState = {
   message: '',
-  sendingTime: ''
+  sendingTime: '',
+  messagesFromSocket: []
 }
 
 export default (state = initialState, action) => {
@@ -18,25 +24,18 @@ export default (state = initialState, action) => {
     case SEND: {
       return { ...state, message: '' }
     }
+    case UPDATE_MESSAGES_FROM_SOCKET: {
+      return { ...state, messagesFromSocket: [...state.messagesFromSocket, action.data] }
+    }
     default:
       return state
   }
 }
 
+
 export function updateMessage(message) {
   return { type: UPDATE_MESSAGE, message }
 }
-
-// setInterval(function updateSendingTime() {
-//   let h = new Date().getHours()
-//   let m = new Date().getMinutes()
-
-//   h = h < 10 ? 0 + h : h
-//   m = m < 10 ? 0 + m : m
-//   const data = `${h}:${m}`
-
-//   return { type: UPDATE_SENDING_TIME, data }
-// }, 1000)
 
 export function updateSendingTime(sendingTime) {
   return { type: UPDATE_SENDING_TIME, sendingTime }
@@ -61,6 +60,17 @@ export function sendMessage() {
       .then((r) => r.json())
       .then(() => {
         dispatch({ type: SEND })
+        getSocket().emit('chat message', {
+          message,
+          username,
+          sendingTime,
+          room: activeChannel
+        })
       })
   }
+}
+
+export function updateMessagesFromSocket(data) {
+  console.log('редьюсерс', data)
+  return { type: UPDATE_MESSAGES_FROM_SOCKET, data }
 }

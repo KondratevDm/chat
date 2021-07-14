@@ -1,8 +1,7 @@
 const CHANGE_SIDEBAR_TOGGLE_STATE = 'CHANGE_SIDEBAR_TOGGLE_STATE'
 
 const initialState = {
-  isSidebarToggleModalActive: false,
-
+  isSidebarToggleModalActive: false
 }
 
 export default (state = initialState, action) => {
@@ -22,4 +21,3 @@ export function changeSidebarToggleState() {
     dispatch({ type: CHANGE_SIDEBAR_TOGGLE_STATE })
   }
 }
-

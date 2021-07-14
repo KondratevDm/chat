@@ -19,7 +19,7 @@ const Login = () => {
     },
     validationSchema: Yup.object({
       email: Yup.string().email('Invalid email format').required('Required!'),
-      password: Yup.string().min(6, 'Minimum 6 characters').required('Required!'),
+      password: Yup.string().min(6, 'Minimum 6 characters').required('Required!')
     }),
     onSubmit: (values) => {
       dispatch(updateEmailField(values.email))
@@ -38,16 +38,16 @@ const Login = () => {
           <div
             className={
               errorMessage
-              ? "bg-red-200  py-4 mx-2 my-4 rounded-md text-lg flex items-center mx-auto w-full"
-              : "hidden"
+                ? 'bg-red-200  py-4 mx-2 my-4 rounded-md text-lg flex items-center mx-auto w-full'
+                : 'hidden'
             }
           >
             <div className="ml-auto mr-auto">
-              <span className="text-red-800 text-sm">The email address or password is incorrect</span>
+              <span className="text-red-800 text-sm">
+                The email address or password is incorrect
+              </span>
             </div>
-
           </div>
-
 
           <div className="py-2">
             <div className="flex flex-row justify-between">
@@ -88,9 +88,6 @@ const Login = () => {
           <button
             type="submit"
             className="mt-3 text-lg focus:outline-none font-semibold bg-gray-800 w-full text-white rounded-lg px-6 py-3 block shadow-xl hover:text-white hover:bg-black"
-          // onClick={() => {
-          //   dispatch(loginFunction())
-          // }}
           >
             Log in
           </button>

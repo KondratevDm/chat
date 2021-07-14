@@ -13,7 +13,7 @@ const MessagesWindow = () => {
   const [activeChannelName, setActiveChannelName] = useState('')
   const [activeChannelDescription, setActiveChannelDescription] = useState('')
   const activeChannel = useSelector((s) => s.channels.activeChannel)
-  const user = useSelector((s) => s.auth.user)
+  // const user = useSelector((s) => s.auth.user)
   const isCreateChannelModalActive = useSelector(
     (s) => s.createChannelModal.isCreateChannelModalActive
   )
@@ -27,20 +27,20 @@ const MessagesWindow = () => {
 
   function getActualTime() {
     const monthsArr = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December'
-  ]
-    const time =new Date()
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+    ]
+    const time = new Date()
     let hour = time.getHours()
     let minute = time.getMinutes()
     const day = time.getDate()
@@ -55,10 +55,8 @@ const MessagesWindow = () => {
 
   useEffect(() => {
     getChannelData()
-    socket.emit('Change Room', activeChannel)
+    socket?.emit('Change Room', activeChannel)
   }, [activeChannel])
-
-  
 
   const [inputValue, setInputValue] = useState('')
 
@@ -78,12 +76,12 @@ const MessagesWindow = () => {
 
   const buttonPressEvent = () => {
     if (inputValue) {
-      socket.emit('chat message', {
-        message: inputValue,
-        user: user.username,
-        time: getActualTime(),
-        room: activeChannel
-      })
+      // socket.emit('chat message', {
+      //   message: inputValue,
+      //   username: user.username,
+      //   sendingTime: getActualTime(),
+      //   room: activeChannel
+      // })
       dispatch(updateSendingTime(getActualTime()))
       dispatch(sendMessage())
       setInputValue('')
@@ -146,7 +144,7 @@ const MessagesWindow = () => {
             autoComplete="off"
             value={inputValue}
             placeholder={`Message to #${activeChannel}`}
-            className="w-full  mb-6 px-6 py-2 border-gray-700 border rounded-l-lg text-gray-900 font-light focus:outline-none"
+            className="w-full  mb-6 px-6 py-2 border-gray-700 border border-r-0 rounded-l-lg text-gray-900 font-light focus:outline-none"
             onChange={onChange}
             onKeyPress={enterPressEvent}
           />

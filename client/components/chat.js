@@ -4,7 +4,6 @@ import MessagesWindow from './chat/messages-window'
 import Head from './head'
 
 const Chat = () => {
-
   return (
     <div className="h-screen">
       <Head title="Chat Almost Slack" />

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import Cookies from 'universal-cookie'
-import { history } from '..'
-
+// import { createSocket } from '../index'
+import { history, createSocket } from '..'
 
 const UPDATE_EMAIL = 'UPDATE_LOGIN'
 const UPDATE_PASSWORD = 'UPDATE_PASSWORD'
@@ -48,18 +48,23 @@ export function updatePasswordField(password) {
 export function loginFunction() {
   return (dispatch, getState) => {
     const { email, password } = getState().auth
-    axios.post('/api/v1/auth',
-      JSON.stringify({
-        email,
-        password
-      }), {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(({data}) => {
+    axios
+      .post(
+        '/api/v1/auth',
+        JSON.stringify({
+          email,
+          password
+        }),
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      )
+      .then(({ data }) => {
         dispatch({ type: LOGIN, token: data.token, user: data.user })
         history.push('/chat/general')
+        createSocket(data.token)
       })
       .catch((err) => {
         dispatch({ type: ERROR_MESSAGE })
@@ -100,6 +105,7 @@ export function trySignIn() {
       .then((data) => {
         dispatch({ type: LOGIN, token: data.token, user: data.user })
         history.push('/chat/general')
+        createSocket(data.token)
       })
   }
 }

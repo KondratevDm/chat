@@ -15,7 +15,7 @@ const CreateChannelModal = () => {
   }
 
   return (
-    <div className=" mt-12  z-20 bg-white shadow-2xl  w-full absolute ml-auto mr-auto rounded-md  px-4 pt-2 pb-6 my-2">
+    <div className=" mt-12  z-20 bg-white shadow-2xl  w-full absolute ml-auto mr-auto  px-4 pt-2 pb-6 my-2">
       <div className="flex mb-2 flex-row justify-between items-center">
         <div className="text-gray-800 text-lg">Create a channel</div>
         <button className="focus:outline-none" type="button" onClick={removeChannelModal}>
@@ -63,7 +63,6 @@ const CreateChannelModal = () => {
       </button>
     </div>
   )
-
 }
 
 CreateChannelModal.propTypes = {}

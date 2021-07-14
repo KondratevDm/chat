@@ -4,20 +4,22 @@ import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 import { CSSTransition } from 'react-transition-group'
 import CreateChannelModal from '../create-channel-modal'
-import { getSocket } from '../../redux/index'
+// import { getSocket } from '../../redux/index'
 import { changeCreateChannelModalState } from '../../redux/reducers/createChannelModal'
-import { getChannelsInfo, updateActiveChannels } from '../../redux/reducers/channels'
+import { getChannelsInfo, updateActiveChannels, userJoinToChat } from '../../redux/reducers/channels'
 import { changeSidebarToggleState } from '../../redux/reducers/toggle'
 import '../../../style.css'
 
 const Sidebar = () => {
-  const socket = getSocket()
+  const dispatch = useDispatch()
+  // const socket = getSocket()
   const activeChannel = useSelector((s) => s.channels.activeChannel)
+  const onlineUsersState = useSelector((s) => s.channels.onlineUsers)
   // const user = useSelector((s) => s.auth.user)
   const [channelsName, setChannelsName] = useState([])
   const [onlineUsersToggleState, setOnlineUsersToggleState] = useState(false)
   const [offlineUsersToggleState, setOfflineUsersToggleState] = useState(false)
-  const [offlineUsers, setOfflineUsers] = useState([])
+  const [nameOfUsers, setNameOfUsers] = useState([])
   const [onlineUsers, setOnlineUsers] = useState([])
 
   const isCreateChannelModalActive = useSelector(
@@ -25,34 +27,29 @@ const Sidebar = () => {
   )
 
   useEffect(() => {
-    const handler = function (data) {
-      console.log('дата получена', data)
-      setOnlineUsers(data)
-    }
-    socket.on('Online users', handler)
-  }, [onlineUsers])
-
-  useEffect(() => {
-    socket.emit('Join chat');
-  }, [])
-
-
-
+    setOnlineUsers(onlineUsersState)
+  }, [onlineUsersState])
 
   // useEffect(() => {
   //   const handler = function (data) {
+  //     console.log('дата получена', data)
   //     setOnlineUsers(data)
   //   }
-  //   socket.on('Remove offline users', handler)
+  //   socket.on('Online users', handler)
   // }, [onlineUsers])
 
-  // socket.on('Online users', (data) => {
-  //   setOnlineUsers(data)
-  // })
+  useEffect(() => {
+    setTimeout(() => {
+      dispatch(userJoinToChat())
+    }, 500)
+    // dispatch(userJoinToChat())
+  }, [])
+
+  
 
   const isSidebarToggleModalActive = useSelector((s) => s.toggle.isSidebarToggleModalActive)
 
-  const dispatch = useDispatch()
+
 
   const addChannelModal = () => {
     dispatch(changeCreateChannelModalState())
@@ -68,8 +65,8 @@ const Sidebar = () => {
   }
 
   function getOfflineUsers() {
-    axios.get('/api/v1/getOfflineUsers').then(({ data }) => {
-      setOfflineUsers(data)
+    axios.get('/api/v1/name-of-users').then(({ data }) => {
+      setNameOfUsers(data)
     })
   }
 
@@ -93,7 +90,6 @@ const Sidebar = () => {
     getChannelsData()
     getOfflineUsers()
   }, [])
-
 
   return (
     <CSSTransition
@@ -171,27 +167,28 @@ const Sidebar = () => {
           <div className="px-4 ">
             <div className="opacity-50 mb-3 flex flex-row justify-between items-center">
               <div className="text-gray-100">Online users</div>
-              <button className="focus:outline-none" type="button" onClick={changeOnlineUsersToggleState}>
-                <p className={
-                  onlineUsersToggleState
-                    ? "text-gray-100 text-lg transform rotate-180 duration-200"
-                    : "text-gray-100 text-lg duration-200"
-                }>△</p>
+              <button
+                className="focus:outline-none"
+                type="button"
+                onClick={changeOnlineUsersToggleState}
+              >
+                <p
+                  className={
+                    onlineUsersToggleState
+                      ? 'text-gray-100 text-lg transform rotate-180 duration-200'
+                      : 'text-gray-100 text-lg duration-200'
+                  }
+                >
+                  △
+                </p>
               </button>
             </div>
 
-            <div className={
-              onlineUsersToggleState
-                ? "block overflow-y-auto max-h-32"
-                : "hidden "
-            }>
-
+            <div className={onlineUsersToggleState ? 'block overflow-y-auto max-h-32' : 'hidden '}>
               {onlineUsers.map((element) => (
                 <div key={element} className="flex items-center mb-3">
                   <span className="border bg-green-600 rounded-full block w-3 h-3 mr-2" />
-                  <span className="text-white -mt-1">
-                    {element}
-                  </span>
+                  <span className="text-white -mt-1">{element}</span>
                 </div>
               ))}
               {/* <div className="flex items-center mb-3">
@@ -200,38 +197,40 @@ const Sidebar = () => {
                   {user.username} <i className="text-grey-100 text-sm opacity-50">(me)</i>
                 </span>
               </div> */}
-
             </div>
           </div>
-
 
           <div className="px-4">
             <div className="opacity-50 mb-3 flex flex-row justify-between items-center">
               <div className="text-gray-100">Offline users</div>
-              <button className="focus:outline-none" type="button" onClick={changeOfflineUsersToggleState}>
-                <p className={
-                  offlineUsersToggleState
-                    ? "text-gray-100 text-lg transform rotate-180 duration-200"
-                    : "text-gray-100 text-lg duration-200"
-                }>△</p>
+              <button
+                className="focus:outline-none"
+                type="button"
+                onClick={changeOfflineUsersToggleState}
+              >
+                <p
+                  className={
+                    offlineUsersToggleState
+                      ? 'text-gray-100 text-lg transform rotate-180 duration-200'
+                      : 'text-gray-100 text-lg duration-200'
+                  }
+                >
+                  △
+                </p>
               </button>
             </div>
 
-            <div className={
-              offlineUsersToggleState
-                ? "block overflow-y-auto max-h-32"
-                : "hidden"
-            }>
-
-              {offlineUsers.filter((it) => onlineUsers.indexOf(it) === -1).map((element) => (
-                <div key={element} className="flex items-center mb-3">
-                  <span className="border opacity-50 bg-gray-100 rounded-full block w-3 h-3 mr-2" />
-                  <span className="text-white -mt-1">{element}</span>
-                </div>
-              ))}
+            <div className={offlineUsersToggleState ? 'block overflow-y-auto max-h-32' : 'hidden'}>
+              {nameOfUsers
+                .filter((it) => onlineUsers.indexOf(it) === -1)
+                .map((element) => (
+                  <div key={element} className="flex items-center mb-3">
+                    <span className="border opacity-50 bg-gray-100 rounded-full block w-3 h-3 mr-2" />
+                    <span className="text-white -mt-1">{element}</span>
+                  </div>
+                ))}
             </div>
           </div>
-
 
           {/* <div className="px-4 mb-3 text-gray-100 opacity-50">Offline users</div>
 
@@ -239,7 +238,6 @@ const Sidebar = () => {
             <span className="border bg-gray-100 rounded-full block w-3 h-3 mr-2" />
             <span className="text-white">killgt</span>
           </div> */}
-
         </div>
 
         <CSSTransition

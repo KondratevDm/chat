@@ -1,13 +1,13 @@
 import React from 'react'
-import { useDispatch  } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { changeSidebarToggleState } from '../redux/reducers/toggle'
 
 const Toggle = () => {
   const dispatch = useDispatch()
 
-   function showSidebar() {
-     dispatch(changeSidebarToggleState())
-   }
+  function showSidebar() {
+    dispatch(changeSidebarToggleState())
+  }
   return (
     <div>
       <div className=" text-sm absolute -mt-4 sm:hidden text-gray-500">

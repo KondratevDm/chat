@@ -5,8 +5,8 @@ const CREATE_СHANNEL = 'CREATE_СHANNEL'
 
 const initialState = {
   isCreateChannelModalActive: false,
-  newChannelName:'',
-  newChannelDescription:''
+  newChannelName: '',
+  newChannelDescription: ''
 }
 
 export default (state = initialState, action) => {
@@ -66,4 +66,3 @@ export function createChannel() {
       })
   }
 }
-
