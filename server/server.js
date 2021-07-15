@@ -215,29 +215,53 @@ http.listen(port, () => {
 
 
 let onlineUsers = []
+let onlineUsersInfo = []
 
 io.on('connection', async function (socket) {
   const { token } = socket.handshake.auth
   const jwtUser = jwt.verify(token, config.secret)
   const user = await User.findById(jwtUser.uid)
-  console.log(`${user.username} connected`)
+  console.log(`${user.username} connected, id:${socket.id}`)
   onlineUsers.push(user.username)
 
 
-  socket.on('Join chat', () => {
+  socket.on('Join chat', (activeChannel) => {
+    // console.log(data)
+    let userInfo = {
+      id: socket.id,
+      room: activeChannel
+    }
     io.emit('Online users', onlineUsers)
+    onlineUsersInfo.push(userInfo)
+    console.log(onlineUsersInfo)
+  })
+
+  socket.on('Update Online Users Info', (activeChannel) => {
+    console.log(`${socket.id} перешел в комнату ${activeChannel}`)
+    onlineUsersInfo.map((it) => {
+      if (it.id === socket.id) {
+        it.room = activeChannel
+      }
+    })
+    console.log(onlineUsersInfo)
   })
 
 
   socket.on('chat message', (data) => {
+    const userInCurrentRoom = onlineUsersInfo.filter((it) => it.room === data.room)
     console.log(`message ${data.message} from ${data.username} to #${data.room} `)
-    io.emit('chat message', data)
+    userInCurrentRoom.forEach((it) => {
+      io.to(`${it.id}`).emit('chat message', data)
+    })
+    // io.emit('chat message', data)
+    console.log('Юзеры в комнате:', userInCurrentRoom)
   })
 
   // io.emit('Online users', onlineUsers)
 
   socket.on('disconnect', () => {
     onlineUsers = onlineUsers.filter((it) => it !== user.username)
+    onlineUsersInfo = onlineUsersInfo.filter((it) => it.id !== socket.id)
     console.log(`${user.username} disconnected`)
     console.log(onlineUsers)
     io.emit('Online users', onlineUsers)

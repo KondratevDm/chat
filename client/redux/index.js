@@ -45,7 +45,7 @@ export function createSocket(token) {
 
   socket.on('Online users', function (data) {
     // dispatch(updateOnlineUsers(data))
-   store.dispatch( updateOnlineUsers(data))
+   store.dispatch(updateOnlineUsers(data))
   })
 
 }

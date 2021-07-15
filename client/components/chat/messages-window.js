@@ -4,11 +4,12 @@ import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
 import Message from './message'
 import Toggle from '../toggle'
-import { getSocket } from '../../redux/index'
+// import { getSocket } from '../../redux/index'
 import { updateMessage, sendMessage, updateSendingTime } from '../../redux/reducers/message'
+import { updateOnlineUsersInfo } from '../../redux/reducers/channels'
 
 const MessagesWindow = () => {
-  const socket = getSocket()
+  // const socket = getSocket()
   const dispatch = useDispatch()
   const [activeChannelName, setActiveChannelName] = useState('')
   const [activeChannelDescription, setActiveChannelDescription] = useState('')
@@ -55,8 +56,11 @@ const MessagesWindow = () => {
 
   useEffect(() => {
     getChannelData()
-    socket?.emit('Change Room', activeChannel)
+    setTimeout(() => {
+      dispatch(updateOnlineUsersInfo(activeChannel))
+    }, 500)
   }, [activeChannel])
+  
 
   const [inputValue, setInputValue] = useState('')
 

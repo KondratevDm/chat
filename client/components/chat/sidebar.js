@@ -7,6 +7,7 @@ import CreateChannelModal from '../create-channel-modal'
 // import { getSocket } from '../../redux/index'
 import { changeCreateChannelModalState } from '../../redux/reducers/createChannelModal'
 import { getChannelsInfo, updateActiveChannels, userJoinToChat } from '../../redux/reducers/channels'
+import { nullifyMessagesFromSocket } from '../../redux/reducers/message'
 import { changeSidebarToggleState } from '../../redux/reducers/toggle'
 import '../../../style.css'
 
@@ -15,7 +16,7 @@ const Sidebar = () => {
   // const socket = getSocket()
   const activeChannel = useSelector((s) => s.channels.activeChannel)
   const onlineUsersState = useSelector((s) => s.channels.onlineUsers)
-  // const user = useSelector((s) => s.auth.user)
+  // const user = useSelector((s) => s.auth.user.username)
   const [channelsName, setChannelsName] = useState([])
   const [onlineUsersToggleState, setOnlineUsersToggleState] = useState(false)
   const [offlineUsersToggleState, setOfflineUsersToggleState] = useState(false)
@@ -40,12 +41,23 @@ const Sidebar = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      dispatch(userJoinToChat())
+      dispatch(userJoinToChat(activeChannel))
     }, 500)
-    // dispatch(userJoinToChat())
   }, [])
 
-  
+  // useEffect(async () => {
+  //   try {
+  //     const socket = await getSocket()
+  //     dispatch(userJoinToChat(activeChannel))
+  //     console.log(socket)
+  //   }
+  //   catch (e) {
+  //     console.log(e)
+  //   }
+  // }, [])
+
+
+
 
   const isSidebarToggleModalActive = useSelector((s) => s.toggle.isSidebarToggleModalActive)
 
@@ -79,6 +91,7 @@ const Sidebar = () => {
   }
 
   function updateActiveChannel(data) {
+    dispatch(nullifyMessagesFromSocket())
     dispatch(updateActiveChannels(data))
   }
 
@@ -140,28 +153,28 @@ const Sidebar = () => {
               </button>
             </div>
 
-            {channelsName.map((element) => (
-              <div
-                key={element._id}
-                className={
-                  activeChannel === element
-                    ? 'bg-green-600 py-1 px-4 text-white font-semi-bold'
-                    : 'py-1 px-4 text-white font-semi-bold'
-                }
-              >
-                <Link
-                  to={`/chat/${element}`}
-                  className="flex flex-row transform hover:translate-x-2 transition-transform ease-in duration-200"
-                  onClick={() => {
-                    updateActiveChannel(element)
-                    // showSidebar()
-                  }}
+              {channelsName.map((element) => (
+                <div
+                  key={element._id}
+                  className={
+                    activeChannel === element
+                      ? 'bg-green-600 py-1 px-4 text-white font-semi-bold'
+                      : 'py-1 px-4 text-white font-semi-bold'
+                  }
                 >
-                  <span className="mr-2 opacity-50 text-lg text-grey-100">#</span>
-                  <span className="text-gray-100 break-all">{element}</span>
-                </Link>
-              </div>
-            ))}
+                  <Link
+                    to={`/chat/${element}`}
+                    className="flex flex-row transform hover:translate-x-2 transition-transform ease-in duration-200"
+                    onClick={() => {
+                      updateActiveChannel(element)
+                      // showSidebar()
+                    }}
+                  >
+                    <span className="mr-2 opacity-50 text-lg text-grey-100">#</span>
+                    <span className="text-gray-100 break-all">{element}</span>
+                  </Link>
+                </div>
+              ))}
           </div>
 
           <div className="px-4 ">

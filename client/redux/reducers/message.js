@@ -4,7 +4,7 @@ const UPDATE_MESSAGE = 'UPDATE_MESSAGE'
 const UPDATE_SENDING_TIME = 'UPDATE_SENDING_TIME'
 const SEND = 'SEND'
 const UPDATE_MESSAGES_FROM_SOCKET = 'UPDATE_MESSAGES_FROM_SOCKET'
-
+const NULLIFY_MESSAGES_FROM_SOCKET ='NULLIFY_MESSAGES_FROM_SOCKET'
 
 
 const initialState = {
@@ -26,6 +26,9 @@ export default (state = initialState, action) => {
     }
     case UPDATE_MESSAGES_FROM_SOCKET: {
       return { ...state, messagesFromSocket: [...state.messagesFromSocket, action.data] }
+    }
+    case NULLIFY_MESSAGES_FROM_SOCKET: {
+      return { ...state, messagesFromSocket: [] }
     }
     default:
       return state
@@ -71,6 +74,10 @@ export function sendMessage() {
 }
 
 export function updateMessagesFromSocket(data) {
-  console.log('редьюсерс', data)
   return { type: UPDATE_MESSAGES_FROM_SOCKET, data }
 }
+
+export function nullifyMessagesFromSocket() {
+  return { type: NULLIFY_MESSAGES_FROM_SOCKET }
+}
+

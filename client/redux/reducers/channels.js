@@ -5,11 +5,13 @@ import { getSocket } from '../index'
 const GET_CHANNELS_INFO = 'GET_CHANNELS_INFO'
 const UPDATE_ACTIVE_CHANNEL = 'UPDATE_ACTIVE_CHANNEL'
 const UPDATE_ONLINE_USERS = 'UPDATE_ONLINE_USERS'
+const UPDATE_ONLINE_USERS_INFO = 'UPDATE_ONLINE_USERS_INFO'
 
 const initialState = {
   channels: [],
   activeChannel: 'general',
-  onlineUsers: []
+  onlineUsers: [],
+  onlineUsersInfo: []
 }
 
 export default (state = initialState, action) => {
@@ -22,6 +24,9 @@ export default (state = initialState, action) => {
     }
     case UPDATE_ONLINE_USERS: {
       return { ...state, onlineUsers: action.data }
+    }
+    case UPDATE_ONLINE_USERS_INFO: {
+      return { ...state, onlineUsersInfo: action.data }
     }
     default:
       return state
@@ -46,12 +51,19 @@ export function updateActiveChannels(data) {
 //   }
 // }
 
-export function userJoinToChat() {
+export function userJoinToChat(data) {
   return function () {
-    getSocket().emit('Join chat')
+    getSocket().emit('Join chat', data)
   }
 }
 
 export function updateOnlineUsers(data) {
   return { type: UPDATE_ONLINE_USERS, data }
+}
+
+export function updateOnlineUsersInfo(data) {
+  return function () {
+    getSocket().emit('Update Online Users Info', data)
+  }
+  // return { type: UPDATE_ONLINE_USERS_INFO, data }
 }
