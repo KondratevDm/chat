@@ -10,6 +10,7 @@
 * Real-time communication
 * Fully Responsive design
 * Animations
+* Chat rooms functionality
 
 ## Technology Stack 
 
