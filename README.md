@@ -8,6 +8,7 @@
 * Saving users, channels and messages to the database
 * Adding your own channels
 * Real-time communication
+* Chat rooms functionality
 * Fully Responsive design
 * Animations
 
