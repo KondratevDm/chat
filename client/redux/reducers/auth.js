@@ -1,6 +1,5 @@
 import axios from 'axios'
 import Cookies from 'universal-cookie'
-// import { createSocket } from '../index'
 import { history, createSocket } from '..'
 
 const UPDATE_EMAIL = 'UPDATE_LOGIN'
@@ -72,31 +71,6 @@ export function loginFunction() {
       })
   }
 }
-
-// export function loginFunction() {
-//   return (dispatch, getState) => {
-//     const { email, password } = getState().auth
-//     fetch('/api/v1/auth', {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json'
-//       },
-//       body: JSON.stringify({
-//         email,
-//         password
-//       })
-//     })
-//       .then((r) => r.json())
-//       .then((data) => {
-//         dispatch({ type: LOGIN, token: data.token, user: data.user })
-//         history.push('/chat')
-//       })
-//       .catch((err) => {
-//         dispatch({ type: ERROR_MESSAGE })
-//         console.log(err)
-//       })
-//   }
-// }
 
 export function trySignIn() {
   return (dispatch) => {

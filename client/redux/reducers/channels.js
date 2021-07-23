@@ -1,7 +1,5 @@
-// import axios from 'axios'
 import { getSocket } from '../index'
 
-// const socket = getSocket()
 const GET_CHANNELS_INFO = 'GET_CHANNELS_INFO'
 const UPDATE_ACTIVE_CHANNEL = 'UPDATE_ACTIVE_CHANNEL'
 const UPDATE_ONLINE_USERS = 'UPDATE_ONLINE_USERS'
@@ -43,14 +41,6 @@ export function updateActiveChannels(data) {
   return { type: UPDATE_ACTIVE_CHANNEL, data }
 }
 
-// export function userJoinToChat() {
-//   return function () {
-//     console.log('кто-то зашел', socket)
-//     socket?.emit('Join chat')
-//     // socket?.emit('Join chat')
-//   }
-// }
-
 export function userJoinToChat(data) {
   return function () {
     getSocket().emit('Join chat', data)
@@ -65,5 +55,4 @@ export function updateOnlineUsersInfo(data) {
   return function () {
     getSocket().emit('Update Online Users Info', data)
   }
-  // return { type: UPDATE_ONLINE_USERS_INFO, data }
 }

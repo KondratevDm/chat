@@ -1,4 +1,3 @@
-// import axios from 'axios'
 import { history } from '..'
 
 const UPDATE_USERNAME = 'UPDATE_USERNAME'

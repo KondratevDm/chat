@@ -1,19 +1,15 @@
 import { createStore, applyMiddleware, compose } from 'redux'
-// import { useDispatch } from 'react-redux'
 import { routerMiddleware } from 'connected-react-router'
 import io from 'socket.io-client'
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { updateMessagesFromSocket } from './reducers/message'
 import { updateOnlineUsers } from './reducers/channels'
-
 import rootReducer from './reducers'
 import createHistory from './history'
 
 
 export const history = createHistory()
-// const dispatch = useDispatch()
-
 
 const initialState = {}
 const enhancers = []
@@ -39,19 +35,14 @@ export function createSocket(token) {
   })
 
   socket.on('chat message', function (data) {
-    // dispatch(updateMessagesFromSocket(data))
-   store.dispatch(updateMessagesFromSocket(data))
+    store.dispatch(updateMessagesFromSocket(data))
   })
 
   socket.on('Online users', function (data) {
-    // dispatch(updateOnlineUsers(data))
-   store.dispatch(updateOnlineUsers(data))
+    store.dispatch(updateOnlineUsers(data))
   })
 
 }
-
-
-
 
 export function getSocket() {
   return socket

@@ -1,20 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-// import { nanoid } from 'nanoid'
 import axios from 'axios'
 import Message from './message'
 import Toggle from '../toggle'
-// import { getSocket } from '../../redux/index'
 import { updateMessage, sendMessage, updateSendingTime } from '../../redux/reducers/message'
 import { updateOnlineUsersInfo } from '../../redux/reducers/channels'
 
 const MessagesWindow = () => {
-  // const socket = getSocket()
   const dispatch = useDispatch()
   const [activeChannelName, setActiveChannelName] = useState('')
   const [activeChannelDescription, setActiveChannelDescription] = useState('')
   const activeChannel = useSelector((s) => s.channels.activeChannel)
-  // const user = useSelector((s) => s.auth.user)
   const isCreateChannelModalActive = useSelector(
     (s) => s.createChannelModal.isCreateChannelModalActive
   )
@@ -69,23 +65,8 @@ const MessagesWindow = () => {
     dispatch(updateMessage(e.target.value))
   }
 
-  // const buttonPressEvent = () => {
-  //   if (inputValue) {
-  //     socket.emit('chat message', inputValue)
-  //     dispatch(updateSendingTime(getActualTime()))
-  //     dispatch(sendMessage())
-  //     setInputValue('')
-  //   }
-  // }
-
   const buttonPressEvent = () => {
     if (inputValue) {
-      // socket.emit('chat message', {
-      //   message: inputValue,
-      //   username: user.username,
-      //   sendingTime: getActualTime(),
-      //   room: activeChannel
-      // })
       dispatch(updateSendingTime(getActualTime()))
       dispatch(sendMessage())
       setInputValue('')

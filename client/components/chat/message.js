@@ -1,28 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
-// import { getSocket } from '../../redux/index'
+
 
 const Message = () => {
   const messagesFromSocket = useSelector((s) => s.message.messagesFromSocket)
   const [messagesArrFromSocket, setMessagesArrFromSocket] = useState([])
   const [messagesArrFromDB, setMessagesArrFromDB] = useState([])
-  // const socket = getSocket()
   const activeChannel = useSelector((s) => s.channels.activeChannel)
 
   useEffect(() => {
     setMessagesArrFromSocket(messagesFromSocket)
   }, [messagesFromSocket])
 
-  // useEffect(() => {
-  //   const handler = function (data) {
-  //     setMessagesArrFromSocket([...messagesArrFromSocket, data])
-  //   }
-  //   socket.on('chat message', handler)
-  //   return () => {
-  //     socket.off('chat message', handler)
-  //   }
-  // }, [messagesArrFromSocket])
 
   useEffect(() => {
     if (messagesArrFromDB.length !== 0) {

@@ -15,20 +15,11 @@ import User from './model/User.model'
 import Channel from './model/Channels.model'
 import config from './config'
 import { instanceOf } from 'prop-types'
-// const { writeFile } = require('fs').promises
 const Root = () => ''
 
 mongooseService.connect()
 
 try {
-  // eslint-disable-next-line import/no-unresolved
-  // ;(async () => {
-  //   const items = await import('../dist/assets/js/root.bundle')
-  //   console.log(JSON.stringify(items))
-
-  //   Root = (props) => <items.Root {...props} />
-  //   console.log(JSON.stringify(items.Root))
-  // })()
   console.log(Root)
 } catch (ex) {
   console.log(' run yarn build:prod to enable ssr')
@@ -98,7 +89,6 @@ server.post('/api/v1/reg', (req, res) => {
     password: req.body.password
   })
   user.save()
-  console.log(`User ${req.body.username} added`)
   res.json({ status: 'ok' })
 })
 
@@ -206,7 +196,7 @@ server.get('/*', (req, res) => {
 
 const http = require('http').createServer(server)
 const io = require('socket.io')(http)
-// let connections = []
+
 
 http.listen(port, () => {
   console.log(`listening on *:${port}`)
@@ -221,79 +211,44 @@ io.on('connection', async function (socket) {
   const { token } = socket.handshake.auth
   const jwtUser = jwt.verify(token, config.secret)
   const user = await User.findById(jwtUser.uid)
-  console.log(`${user.username} connected, id:${socket.id}`)
   onlineUsers.push(user.username)
 
 
   socket.on('Join chat', (activeChannel) => {
-    // console.log(data)
     let userInfo = {
       id: socket.id,
       room: activeChannel
     }
     io.emit('Online users', onlineUsers)
     onlineUsersInfo.push(userInfo)
-    console.log(onlineUsersInfo)
+
   })
 
   socket.on('Update Online Users Info', (activeChannel) => {
-    console.log(`${socket.id} перешел в комнату ${activeChannel}`)
     onlineUsersInfo.map((it) => {
       if (it.id === socket.id) {
         it.room = activeChannel
       }
     })
-    console.log(onlineUsersInfo)
   })
 
 
   socket.on('chat message', (data) => {
     const userInCurrentRoom = onlineUsersInfo.filter((it) => it.room === data.room)
-    console.log(`message ${data.message} from ${data.username} to #${data.room} `)
     userInCurrentRoom.forEach((it) => {
       io.to(`${it.id}`).emit('chat message', data)
     })
-    // io.emit('chat message', data)
-    console.log('Юзеры в комнате:', userInCurrentRoom)
   })
 
-  // io.emit('Online users', onlineUsers)
+  
 
   socket.on('disconnect', () => {
     onlineUsers = onlineUsers.filter((it) => it !== user.username)
     onlineUsersInfo = onlineUsersInfo.filter((it) => it.id !== socket.id)
-    console.log(`${user.username} disconnected`)
-    console.log(onlineUsers)
     io.emit('Online users', onlineUsers)
   })
 })
 
-// socket.on('Change Room', (data) => {
-//   socket.join(data)
-//   console.log('сокет подписался на', data)
-// })
 
-// socket.on('chat message', (data) => {
-//   console.log(`message ${data.message} from ${data.user} to #${data.room} `)
-//   io.to(data.room).emit('chat message', data)
-// })
-
-// io.on('connection', (socket) => {
-//   socket.on('chat message', (data) => {
-//     console.log(`message ${data.message} from ${data.user} in ${data.room} channel`)
-//     io.to(data.room).emit('chat message', data)
-//   })
-// })
-
-export default function getConnections() {
-  return connections
-}
-
-// io.on('connection', (socket) => {
-//   socket.on('chat message', (msg) => {
-//     console.log('message: ' + msg)
-//     io.emit('chat message', msg)
-//   })
-// })
 
 console.log(`Serving at http://localhost:${port}`)

@@ -16,7 +16,7 @@ Head.propTypes = {
 }
 
 Head.defaultProps = {
-  title: 'skillcrucial.com'
+  title: 'AlmostSlack'
 }
 
 export default Head
