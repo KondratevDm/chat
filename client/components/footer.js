@@ -4,7 +4,7 @@ const Footer = () => {
     return (
         <div className="mt-10">
             <div className=" flex sm:flex-row md: flex-col items-center justify-around">
-                <p className="text-sm text-black">Develop by Dmitry Kondratev</p>
+                <p className="text-sm text-black">Developed by Dmitry Kondratev</p>
                 <div className="flex items-center">
                     <a target="_blank" rel="noreferrer" href="mailto:kondratevdmitry24@gmail.com">
                         <svg fill="none" className="h-5 w-5 text-black ml-6" viewBox="0 0 24 24" stroke="currentColor">

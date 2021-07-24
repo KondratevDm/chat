@@ -33,9 +33,10 @@
 
 ## You can try it!
 
-This project is hosted on Heroku => [chat-almost-slack](https://chat-almost-slack.herokuapp.com/)
-If you do not want to register, use this data:
-Email : *admin@yandex.ru*
-Password : *123456*
+This project is hosted on Heroku => [chat-almost-slack](https://chat-almost-slack.herokuapp.com/)  
+If you do not want to register, use this data:  
+Email : *admin@yandex.ru*  
+Password : *123456*  
+
 
 
