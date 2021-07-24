@@ -1,7 +1,7 @@
 {
-    "name": "boilerplate-skillcrucial",
+    "name": "almostSlack",
     "version": "0.0.2",
-    "description": "Boilerplate SkillCrucial",
+    "description": "almostSlack",
     "main": "index.js",
     "scripts": {
         "docker-start-dev": "docker-compose -f \"docker\\DEV.docker-compose.yml\" up",

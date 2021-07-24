@@ -6,11 +6,11 @@ import * as Yup from 'yup'
 import { updateEmailField, updatePasswordField, loginFunction } from '../redux/reducers/auth'
 
 import Head from './head'
+import Footer from './footer'
 
 const Login = () => {
   const dispatch = useDispatch()
   const errorMessage = useSelector((s) => s.auth.errorMessage)
-  // const password = useSelector((s) => s.auth.password)
 
   const formik = useFormik({
     initialValues: {
@@ -31,7 +31,7 @@ const Login = () => {
   return (
     <div className="h-screen w-screen">
       <Head title="Login" />
-      <div className="w-5/6 sm:w-3/5 md:w-2/4 lg:w-2/5 xl:w-1/4 2xl:w-1/4 px-6 flex justify-center flex-col  h-full mx-auto ">
+      <div className="w-5/6 sm:w-3/5 md:w-2/4 lg:w-2/5 xl:w-1/3 2xl:w-1/3 px-6 flex justify-center flex-col  h-full mx-auto ">
         <form onSubmit={formik.handleSubmit}>
           <p className="font-medium text-center text-2xl mb-5 text-black">Login a profile</p>
 
@@ -103,7 +103,9 @@ const Login = () => {
             Already don`t have a profile? Register!
           </Link>
         </div>
+        < Footer />
       </div>
+      
     </div>
   )
 }

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
+import Footer from './footer'
 
 import {
   createUsernameField,
@@ -44,7 +45,7 @@ const Registration = () => {
   return (
     <div className="h-screen w-screen">
       <Head title="Registration" />
-      <div className="w-5/6 sm:w-3/5 md:w-2/4 lg:w-2/5 xl:w-1/4 2xl:w-1/4 px-6 flex justify-center flex-col  h-full mx-auto ">
+      <div className="w-5/6 sm:w-3/5 md:w-2/4 lg:w-2/5 xl:w-1/3 2xl:w-1/3 px-6 flex justify-center flex-col  h-full mx-auto ">
         <form onSubmit={formik.handleSubmit}>
           <p className="font-medium text-center text-2xl mb-5 text-black">Create a profile</p>
 
@@ -139,6 +140,7 @@ const Registration = () => {
             Already have a profile? Login!
           </Link>
         </div>
+        < Footer />
       </div>
     </div>
   )
